@@ -5,6 +5,8 @@
 #ifndef MEN_MAKET_MAKET_H
 #define MEN_MAKET_MAKET_H
 
+#include "lib/conio2.h"
+
 // DEBUT Specification
 
 typedef enum {
@@ -39,6 +41,7 @@ typedef struct {
 } Produit;
 
 typedef struct {
+    int id;
     Produit* produit;
     Surcusale* surcusale;
     int quantite_min;
@@ -87,6 +90,8 @@ typedef struct {
 
 typedef enum {
     MM_ACCUEIL,
+    MM_TEST_DONNEES,
+    MM_SORTIE
 } TypePage;
 
 typedef struct {
@@ -99,16 +104,15 @@ typedef struct {
 // DEBUT DONNEE
 
 enum TypeListe {
-    MM_LISTE_SURCUSSALES,
+    MM_LISTE_SUCCURSALES,
     MM_LISTE_PRODUITS,
-    MM_LISTE_PRODUITS_SURCUSSALES,
+    MM_LISTE_PRODUITS_SUCCURSALES,
     MM_LISTE_CLIENTS,
     MM_LISTE_VENTES,
     MM_LISTE_DETAILS_VENTES,
 };
 
 typedef struct Noeud {
-    long long id;
     void *data;
     struct Noeud *precedent;
     struct Noeud *suivant;
@@ -117,9 +121,11 @@ typedef struct Noeud {
 typedef struct Liste {
     int nombre;
     long long id_suivant;
-    void (*ajouter)(struct Noeud*, void*);
-    struct Noeud *premier;
-    struct Noeud *dernier;
+    Noeud *premier;
+    Noeud *dernier;
+    enum TypeListe type;
 } Liste;
+
+#define FICHIER_CLIENTS "clients.dat"
 
 #endif //MEN_MAKET_MAKET_H
