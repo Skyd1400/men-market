@@ -25,7 +25,7 @@ int main(){
 
     int fini = 0;
     inittextinfo();
-    charger_donnees(MM_LISTE_CLIENTS);
+    charger_donnees(MM_LIS_KLIYAN);
     creer_page_accueil(&pages[0]);
     creer_page_test(&pages[1]);
     page_courant = 0;

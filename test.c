@@ -19,14 +19,19 @@ int afficher_test()
 {
     ScreenClear();
     afficher_en_tete("TEST DES DONNEES");
-    Liste *liste = trouver_liste(MM_LISTE_CLIENTS);
-    Noeud *noeud = liste->premier;
+    textcolor(WHITE);
+    Lis *liste = trouver_liste(MM_LIS_KLIYAN);
+    Mayon *noeud = liste->premye;
     do
     {
-        Client *temp = noeud->data;
+        Kliyan *temp = noeud->done;
         if (temp != NULL)
-            printf("\nId du client : %d", ((Client *) noeud->data)->id);
-        noeud = noeud->suivant;
+            printf("\n\tId du client : %d", temp->id);
+            printf("\n\tNom du client : %s", temp->non);
+            printf("\n\tType : %s", temp->tip == ENTREPRISE? "Entreprise" : "Particulier");
+            printf("\n\tTelephone : %s", temp->telefon);
+            printf("\n=====================================================");
+        noeud = noeud->apre;
     } while (noeud != NULL);
     getch();
     return MM_ACCUEIL;

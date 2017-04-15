@@ -7,86 +7,86 @@
 
 #include "lib/conio2.h"
 
-// DEBUT Specification
+// KOMANSMAN SPESIFIKASYON
 
 typedef enum {
     EN_VENTE,
     EXCLUS,
     NON_DISPO
-} StatutProduit;
+} StatiPwodwi;
 
 typedef struct {
     int no;
-    char* rue;
-    char* ville;
-    char* departement;
-} Adresse;
+    char* ri;
+    char* vil;
+    char* depatman;
+} Adres;
 
 typedef struct {
     int id;
-    char *desc;
-    Adresse* adresse;
-    char* responsable;
-    char* telephone;
-} Surcusale;
+    char *deskripsyon;
+    Adres* adres;
+    char* responsab;
+    char* telefon;
+} Sikisal;
 
 typedef struct {
-    int code;
-    char* desc;
-    int quantite;
-    int prix_revient_unit;
-    int prix_vente_unit;
-    int stock_securite;
-    StatutProduit statut;
-} Produit;
+    int kod;
+    char* deskripsyon;
+    int kantite;
+    int pri_revant_init;
+    int pri_vant_inite;
+    int stok_sekirite;
+    StatiPwodwi stati;
+} Pwodwi;
 
 typedef struct {
     int id;
-    Produit* produit;
-    Surcusale* surcusale;
-    int quantite_min;
-    int quantite_dispo;
-    int quantite_max;
-} ProduitSurcusale;
+    Pwodwi* pwodwi;
+    Sikisal* sikisal;
+    int kantite_min;
+    int kantite_dispo;
+    int kantite_max;
+} PwodwiSikisal;
 
 typedef enum {
     PARTICULIER,
     ENTREPRISE
-} TypeClient;
+} TipKliyan;
 
 typedef struct {
     int id;
-    char* nom;
-    TypeClient type;
-    Adresse* adresse;
-    char* telephone;
-} Client;
+    char non[50];
+    TipKliyan tip;
+    Adres* adres;
+    char telefon[9];
+} Kliyan;
 
 typedef struct {
-    int jour;
-    int mois;
-    int annee;
-} Date;
+    int jou;
+    int mwa;
+    int ane;
+} Dat;
 
-
-typedef struct {
-    int id;
-    Client* client;
-    Surcusale* surcusale;
-    Date* date;
-} Vente;
 
 typedef struct {
     int id;
-    Vente* vente;
-    Produit *produit;
-    int quantite_article;
-    int prix_unit;
-} DetailsVente;
+    Kliyan* kliyan;
+    Sikisal* sikisal;
+    Dat* dat;
+} Vant;
 
-// FIN SPECIFICATION
+typedef struct {
+    int id;
+    Vant* vant;
+    Pwodwi *pwodwi;
+    int kantite_atik;
+    int pri_inite;
+} DetayVant;
 
-// DEBUT INTERFACE
+// FEN SPESIFIKASYON
+
+// KOMANSMAN ENTEFAS
 
 typedef enum {
     MM_ACCUEIL,
@@ -99,33 +99,33 @@ typedef struct {
     int  (*afficher)();
 } Page;
 
-// FIN INTERFACE
+// FEN ENTEFAS
 
-// DEBUT DONNEE
+// KOMANSMAN DONE
 
-enum TypeListe {
-    MM_LISTE_SUCCURSALES,
-    MM_LISTE_PRODUITS,
-    MM_LISTE_PRODUITS_SUCCURSALES,
-    MM_LISTE_CLIENTS,
-    MM_LISTE_VENTES,
-    MM_LISTE_DETAILS_VENTES,
+enum TipLis {
+    MM_LIS_SIKISAL,
+    MM_LIS_PWODWI,
+    MM_LIS_PWODWI_SIKISAL,
+    MM_LIS_KLIYAN,
+    MM_LIS_VANT,
+    MM_LIS_DETAY_VANT,
 };
 
-typedef struct Noeud {
-    void *data;
-    struct Noeud *precedent;
-    struct Noeud *suivant;
-} Noeud;
+typedef struct Mayon {
+    void *done;
+    struct Mayon *anvan;
+    struct Mayon *apre;
+} Mayon;
 
-typedef struct Liste {
-    int nombre;
-    long long id_suivant;
-    Noeud *premier;
-    Noeud *dernier;
-    enum TypeListe type;
-} Liste;
+typedef struct {
+    int nonb;
+    long long id_swivan;
+    Mayon *premye;
+    Mayon *denye;
+    enum TipLis tip;
+} Lis;
 
-#define FICHIER_CLIENTS "clients.dat"
+#define FICHYE_KLIYAN "clients.dat"
 
 #endif //MEN_MAKET_MAKET_H
