@@ -10,10 +10,6 @@
 #include "page.h"
 
 
-int id_accueil() {
-    return MM_ACCUEIL;
-}
-
 
 int afficher_accueil() {
     ScreenClear();
@@ -25,6 +21,6 @@ int afficher_accueil() {
 }
 
 void creer_page_accueil(Page* page){
-    page->id = id_accueil;
+    page->id = MM_ACCUEIL;
     page->afficher = afficher_accueil;
 }

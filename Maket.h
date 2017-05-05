@@ -17,17 +17,17 @@ typedef enum {
 
 typedef struct {
     int no;
-    char* ri;
-    char* vil;
-    char* depatman;
+    char ri[50];
+    char vil[25];
+    char depatman[20];
 } Adres;
 
 typedef struct {
     int id;
-    char *deskripsyon;
+    char deskripsyon[100];
     Adres* adres;
-    char* responsab;
-    char* telefon;
+    char responsab[20];
+    char telefon[9];
 } Sikisal;
 
 typedef struct {
@@ -95,7 +95,7 @@ typedef enum {
 } TypePage;
 
 typedef struct {
-    int  (*id)();
+    int  id;
     int  (*afficher)();
 } Page;
 
@@ -127,5 +127,6 @@ typedef struct {
 } Lis;
 
 #define FICHYE_KLIYAN "clients.dat"
+#define FICHYE_SIKISAL "succursales.dat"
 
 #endif //MEN_MAKET_MAKET_H

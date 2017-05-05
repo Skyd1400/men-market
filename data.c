@@ -158,9 +158,51 @@ void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
                 case 2: // Champ type
                     client->tip = ((char *) vale_chan)[0] == 'E' ? ENTREPRISE : PARTICULIER;
                     break;
-                case 3: // Champ Telephone
+                case 3: // chan no adress
+                    client->adres->no = atoi(vale_chan);
+                    break;
+                case 4: // chan ri adres
+                    strncpy(client->adres->ri, vale_chan, 49);
+                    break;
+                case 5: // chan vil adres
+                    strncpy(client->adres->vil, vale_chan, 24);
+                    break;
+                case 6: // chan depatman
+                    strncpy(client->adres->depatman, vale_chan, 19);
+                    break;
+                case 7: // Champ Telephone
                     strncpy(client->telefon, vale_chan, 8);
                     client->telefon[8] = 0;
+                    break;
+                default:break;
+            }
+        } else if (p_data->data_type == MM_LIS_SIKISAL) {
+            Sikisal * temp = p_data->temp;
+            switch (p_data->c_champ) {
+                case 0: //chan Id
+                    temp->id = atoi(vale_chan);
+                    break;
+                case 1: //chan deskripsyon
+                    strncpy(temp->deskripsyon, vale_chan, 99);
+                    break;
+                case 2: // chan no adress
+                    temp->adres->no = atoi(vale_chan);
+                    break;
+                case 3: // chan ri adres
+                    strncpy(temp->adres->ri, vale_chan, 49);
+                    break;
+                case 4: // chan vil adres
+                    strncpy(temp->adres->vil, vale_chan, 24);
+                    break;
+                case 5: // chan depatman
+                    strncpy(temp->adres->depatman, vale_chan, 19);
+                    break;
+                case 6: // chan depatman
+                    strncpy(temp->responsab, vale_chan, 19);
+                    break;
+                case 7: // Champ Telephone
+                    strncpy(temp->telefon, vale_chan, 8);
+                    temp->telefon[8] = 0;
                     break;
             }
         }
@@ -182,6 +224,11 @@ void tretman_liyn(int c, void *data) {
             case MM_LIS_KLIYAN:
                 liste = &liste_clients;
                 t = sizeof(Kliyan);
+                break;
+            case MM_LIS_SIKISAL:
+                liste = trouver_liste(MM_LIS_SIKISAL);
+                t = sizeof(Sikisal);
+                break;
         }
         if (p_data->temp != NULL) {
             // nou te gentan gen yon eleman nou tap trete deja
@@ -212,6 +259,9 @@ int charger_fichier(int type_donnees) {
         // n'ap ba varyab la vale swivan ki lis nou deside ouve
         case MM_LIS_KLIYAN:
             fichier = FICHYE_KLIYAN;
+            break;
+        case MM_LIS_SIKISAL:
+            fichier = FICHYE_SIKISAL;
             break;
         default:
             return 1;
@@ -244,7 +294,9 @@ int ecrire_fichier(int type_donnees) {
 
 void charger_donnees(int type) {
     inisyalize_lis(&liste_clients, MM_LIS_KLIYAN); // nou kreye lis la
+    inisyalize_lis(&liste_succursales, MM_LIS_SIKISAL); // nou kreye lis la
     charger_fichier(MM_LIS_KLIYAN); // nou ajoute done ki nan fichye an nan lis lan
+    charger_fichier(MM_LIS_SIKISAL); // nou ajoute done ki nan fichye an nan lis lan
 }
 
 

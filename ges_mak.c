@@ -37,7 +37,7 @@ int main(){
             for (int i = 0; i < nombre_de_pages; i++){
                 if (prochaine_page == MM_SORTIE) {
                     fini = 1;
-                } else if (pages[i].id() == prochaine_page) {
+                } else if (pages[i].id == prochaine_page) {
                     derniere_page = page_courant;
                     page_courant = i;
                     break;
