@@ -12,12 +12,6 @@ typedef struct {
     int page_suivante;
 } Menu;
 
-typedef struct {
-    char *titre;
-    Menu *Menus;
-    int nombre_menu;
-} EcranMenu;
-
 
 int afficher_menu(Menu *menu, int choix_possibles);
 

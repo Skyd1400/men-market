@@ -15,11 +15,25 @@ typedef enum {
     NON_DISPO
 } StatiPwodwi;
 
+
+typedef enum {
+    Atibonit,
+    Grandans,
+    Nip,
+    No,
+    Nodes,
+    Nodwes,
+    Sant,
+    Sid,
+    Sides,
+    Wes
+} Depatman;
+
 typedef struct {
     int no;
     char ri[50];
     char vil[25];
-    char depatman[20];
+    Depatman depatman;
 } Adres;
 
 typedef struct {
@@ -90,6 +104,10 @@ typedef struct {
 
 typedef enum {
     MM_ACCUEIL,
+    MM_MENU_CLIENT,
+    MM_AJOUT_CLIENT,
+    MM_MODIF_CLIENT,
+    MM_SAUVEGARDE,
     MM_TEST_DONNEES,
     MM_SORTIE
 } TypePage;
@@ -119,8 +137,9 @@ typedef struct Mayon {
 } Mayon;
 
 typedef struct {
+    int chanje;
     int nonb;
-    long long id_swivan;
+    int id_swivan;
     Mayon *premye;
     Mayon *denye;
     enum TipLis tip;

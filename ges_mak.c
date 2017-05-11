@@ -8,9 +8,10 @@
 #include "acc.h"
 #include "test.h"
 #include "data.h"
+#include "ges_cli.h"
 
 
-#define MAX_PAGES 2
+#define MAX_PAGES 3
 
 Page pages[MAX_PAGES];
 int page_courant;
@@ -27,8 +28,9 @@ int main(){
     inittextinfo();
     charger_donnees(MM_LIS_KLIYAN);
     creer_page_accueil(&pages[0]);
-    creer_page_test(&pages[1]);
-    page_courant = 0;
+    kreye_paj_kliyan(&pages[1]);
+    creer_page_test(&pages[2]);
+    page_courant = 1;
     nombre_de_pages = MAX_PAGES;
 
     while (!fini) {

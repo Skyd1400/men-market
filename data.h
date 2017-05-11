@@ -13,7 +13,7 @@
 /*
  * Fonksyon sa pemet ou jwenn adres yon lis en fonksyon de tip done ki stoke ladan li
  */
-Lis * trouver_liste(int type);
+Lis * jwenn_lis(int type);
 /*
  * Fonksyon sa pemet ou ajoute yon done nan yon lis
  */
@@ -42,5 +42,8 @@ void inisyalize_lis(Lis *liste, int type);
  * a pati de fichye sa
  */
 void charger_donnees(int type);
+
+int ecrire_fichier(int type);
+int afiche_ekran_sovgade(int type, TypePage paj_retou);
 
 #endif //MEN_MAKET_DATA_H

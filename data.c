@@ -9,6 +9,8 @@
 #include "Maket.h"
 #include "data.h"
 #include "lib/csv.h"
+#include "page.h"
+#include "util.h"
 
 
 Lis liste_succursales;
@@ -21,7 +23,7 @@ Lis liste_details_ventes;
 
 #define T_TAMPON 1024
 
-Lis *trouver_liste(int type) {
+Lis *jwenn_lis(int type) {
     switch (type) {
         case MM_LIS_SIKISAL:
             return &liste_succursales;
@@ -105,18 +107,23 @@ int retire_nan_lis(Lis *liste, int id, int effacer) {
     if (a_eff != NULL) {
         if (a_eff->anvan) a_eff->anvan->apre = a_eff->apre;
         if (a_eff->apre) a_eff->apre->anvan = a_eff->anvan;
-        void * temp = a_eff->done;
+        void *temp = a_eff->done;
         if (effacer) {
             switch (liste->tip) {
                 case MM_LIS_KLIYAN:
-                    free(((Kliyan *)temp)->adres);
+                    free(((Kliyan *) temp)->adres);
                     break;
                     //TODO add the rest
-                case MM_LIS_SIKISAL:break;
-                case MM_LIS_PWODWI:break;
-                case MM_LIS_PWODWI_SIKISAL:break;
-                case MM_LIS_VANT:break;
-                case MM_LIS_DETAY_VANT:break;
+                case MM_LIS_SIKISAL:
+                    break;
+                case MM_LIS_PWODWI:
+                    break;
+                case MM_LIS_PWODWI_SIKISAL:
+                    break;
+                case MM_LIS_VANT:
+                    break;
+                case MM_LIS_DETAY_VANT:
+                    break;
             }
             free(temp); // Yo mande pou nou efase done a
         }
@@ -131,6 +138,7 @@ void inisyalize_lis(Lis *liste, int type) {
     if (liste == NULL) liste = malloc(sizeof(Lis)); // Okazou nou potko janm inisyalize espas memwa pou li
     liste->nonb = 0; // Ya, poko gen eleman :)
     liste->id_swivan = 1; //N'ap komanse ak 1
+    liste->chanje = 0; //Lis la gen menm enfomasyon ak fichye a pa defo
     liste->premye = liste->denye = NULL; // Nou pa gen eleman
 }
 
@@ -143,7 +151,8 @@ typedef struct {
 
 void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
     DoneAnaliz *p_data = ((DoneAnaliz *) done_analiz); // yon ti konvesyon
-    if (p_data->c_ligne > 0 && p_data->temp != NULL) { // sote premye liyn nan e asire ke espas pou stoke an egziste pou liyn nan
+    if (p_data->c_ligne > 0 &&
+        p_data->temp != NULL) { // sote premye liyn nan e asire ke espas pou stoke an egziste pou liyn nan
         if (p_data->data_type == MM_LIS_KLIYAN) {
             // Se nan fichye kliyan an nou ye
             Kliyan *client = p_data->temp; // chanjman tip otomatik
@@ -168,16 +177,17 @@ void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
                     strncpy(client->adres->vil, vale_chan, 24);
                     break;
                 case 6: // chan depatman
-                    strncpy(client->adres->depatman, vale_chan, 19);
+                    client->adres->depatman = atoi(vale_chan);
                     break;
                 case 7: // Champ Telephone
                     strncpy(client->telefon, vale_chan, 8);
                     client->telefon[8] = 0;
                     break;
-                default:break;
+                default:
+                    break;
             }
         } else if (p_data->data_type == MM_LIS_SIKISAL) {
-            Sikisal * temp = p_data->temp;
+            Sikisal *temp = p_data->temp;
             switch (p_data->c_champ) {
                 case 0: //chan Id
                     temp->id = atoi(vale_chan);
@@ -195,7 +205,7 @@ void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
                     strncpy(temp->adres->vil, vale_chan, 24);
                     break;
                 case 5: // chan depatman
-                    strncpy(temp->adres->depatman, vale_chan, 19);
+                    temp->adres->depatman = atoi(vale_chan);
                     break;
                 case 6: // chan depatman
                     strncpy(temp->responsab, vale_chan, 19);
@@ -207,7 +217,6 @@ void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
             }
         }
     }
-    printf("\n%s", vale_chan);
     p_data->c_champ++; // lot kolon apre a
 
 }
@@ -215,7 +224,6 @@ void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
 void tretman_liyn(int c, void *data) {
     DoneAnaliz *p_data = ((DoneAnaliz *) data);
     p_data->c_ligne++;
-    printf("Nouveau ligne : %d\n", c);
     if (p_data->c_ligne > 0) // nou sote premye lin nan
     {
         Lis *liste; // li pral stoke adres lis nap trete
@@ -226,7 +234,7 @@ void tretman_liyn(int c, void *data) {
                 t = sizeof(Kliyan);
                 break;
             case MM_LIS_SIKISAL:
-                liste = trouver_liste(MM_LIS_SIKISAL);
+                liste = jwenn_lis(MM_LIS_SIKISAL);
                 t = sizeof(Sikisal);
                 break;
         }
@@ -288,8 +296,57 @@ int charger_fichier(int type_donnees) {
     return 0;
 }
 
-int ecrire_fichier(int type_donnees) {
+char * antet_kliyan() {
+    return "\"ID_client\",\"nom\",\"type\",\"no\",\"rue\",\"ville\",\"departement\",\"telephone\"";
+}
 
+char * liyn_kliyan(void * done) {
+    Kliyan * kliyan = done;
+    char * buffer = malloc(1024);
+    snprintf(buffer, 1024, "\n\"%d\",\"%s\",\"%c\",\"%d\",\"%s\",\"%s\",\"%d\",\"%s\"",
+             kliyan->id, 
+             kliyan->non, 
+             kliyan->tip == PARTICULIER ? 'P' : 'E', 
+             kliyan->adres->no,
+             kliyan->adres->ri,
+             kliyan->adres->vil,
+             kliyan->adres->depatman,
+             kliyan->telefon);
+    return buffer;
+}
+
+int ecrire_fichier(int type_donnees) {
+    char *fichier; // sa pral stoke non fichye a
+    char * (*antet)(); //fonksyon kap jenere antet fichye a
+    char * (*liyn)(void *); //fonksyon kap jenere teks pou chak liyn
+    switch (type_donnees) {
+        // n'ap ba varyab la vale swivan ki lis nou deside ouve
+        case MM_LIS_KLIYAN:
+            fichier = FICHYE_KLIYAN;
+            antet = antet_kliyan;
+            liyn = liyn_kliyan;
+            break;
+        case MM_LIS_SIKISAL:
+            fichier = FICHYE_SIKISAL;
+            break;
+        default:
+            return 1;
+    }
+    // nap efase sak te la deja yo
+    FILE *fp = fopen(fichier, "w");
+    fprintf(fp, antet());
+    Lis *lis = jwenn_lis(type_donnees);
+    Mayon * mayon = lis->premye;
+    while (mayon != NULL) {
+        if (mayon->done != NULL) {
+            char *text = liyn(mayon->done);
+            fprintf(fp, text);
+            free(text);
+        }
+        mayon = mayon->apre;
+    }
+    fclose(fp);
+    return 1;
 }
 
 void charger_donnees(int type) {
@@ -297,6 +354,32 @@ void charger_donnees(int type) {
     inisyalize_lis(&liste_succursales, MM_LIS_SIKISAL); // nou kreye lis la
     charger_fichier(MM_LIS_KLIYAN); // nou ajoute done ki nan fichye an nan lis lan
     charger_fichier(MM_LIS_SIKISAL); // nou ajoute done ki nan fichye an nan lis lan
+}
+
+int afiche_ekran_sovgade(int type, TypePage paj_retou) {
+    ScreenClear();
+    afficher_en_tete("Sauvegarde");
+    textcolor(WHITE);
+    Lis * lis = jwenn_lis(type);
+    int ekri = lis->chanje;
+    if (!ekri) {
+        afiche_alet("\n\tLes information n'ont pas ete modifiees", NOMAL);
+        textcolor(WHITE);
+        printf("\n\tForcer la sauvegarde? [(O)ui\\(N)on]: ");
+        char chwa = getch();
+        if (chwa == 'O' || chwa == 'o') {
+            ekri = 1;
+        }
+    }
+    if (ekri) {
+        afiche_alet("\n\tSauvegarde du fichier...", AVETISMAN);
+        ecrire_fichier(type);
+        afiche_alet("\n\tFichier sauvegarde", SIKSE);
+        textcolor(WHITE);
+    }
+    printf("\n\tAppuyer sur une touche  pour retourner au menu...");
+    getch();
+    return paj_retou;
 }
 
 

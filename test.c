@@ -15,7 +15,7 @@ int afficher_test() {
     ScreenClear();
     afficher_en_tete("TEST DES DONNEES");
     textcolor(WHITE);
-    Lis *liste = trouver_liste(MM_LIS_KLIYAN);
+    Lis *liste = jwenn_lis(MM_LIS_KLIYAN);
     Mayon *mayon = liste->premye;
     do {
         Kliyan *temp = mayon->done;
@@ -35,7 +35,7 @@ int afficher_test() {
     } while (mayon != NULL);
     printf("\n\n=====================================================");
     printf("\nFichye succursales.dat\n\n");
-    liste = trouver_liste(MM_LIS_SIKISAL);
+    liste = jwenn_lis(MM_LIS_SIKISAL);
     mayon = liste->premye;
     do {
         Sikisal *temp = mayon->done;

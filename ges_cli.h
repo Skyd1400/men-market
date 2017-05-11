@@ -5,4 +5,7 @@
 #ifndef MEN_MAKET_GES_CLI_H
 #define MEN_MAKET_GES_CLI_H
 
+
+void kreye_paj_kliyan(Page *page);
+
 #endif //MEN_MAKET_GES_CLI_H
