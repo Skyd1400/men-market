@@ -9,7 +9,7 @@
 
 int choix(int choix_possibles);
 
-int afficher_menu(Menu *menu, int choix_possibles) {
+int afficher_menu(Meni *menu, int choix_possibles) {
     int y = wherey() + 1;
     for (int i = 0; i < choix_possibles; i++) {
         char text[100];

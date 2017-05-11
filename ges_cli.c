@@ -14,32 +14,41 @@
 #include "util.h"
 
 
-Menu menu[4] = {
-        {"Ajouter un client",                    MM_AJOUT_CLIENT},
-        {"Modifier un client",                   MM_MODIF_CLIENT},
-        {"Sauvegarder le fichier sur le disque", MM_SAUVEGARDE},
-        {"Retour",                               MM_ACCUEIL}
+Meni meni_kliyan[4] = {
+        {"Ajouter un client",                    MM_AJOU_KLIYAN},
+        {"Modifier un client",                   MM_MODIF_KLIYAN},
+        {"Sauvegarder le fichier sur le disque", MM_SOVGAD},
+        {"Retour",                               MM_AKEY}
 };
 
+/*
+ * Fonksyon sa responsab pou jere paj ajoute yon kliyan
+ */
 int ajoute_kliyan();
 
+/*
+ * Fonksyon sa reponsab pou jere paj modifye yon kliyan
+ */
 int modifye_kliyan();
 
+/*
+ * Sa responsab pou mande itilizate a enfomasyon sou yon kliyan
+ */
 void fomile_kliyan(Kliyan *kliyan);
 
 int afiche_meni_kliyan() {
     ScreenClear();
     afficher_en_tete("Module Clients");
-    int ret = afficher_menu(menu, 4);
+    int ret = afficher_menu(meni_kliyan, 4);
     switch (ret) {
-        case MM_AJOUT_CLIENT:
+        case MM_AJOU_KLIYAN:
             ret = ajoute_kliyan();
             break;
-        case MM_MODIF_CLIENT:
+        case MM_MODIF_KLIYAN:
             ret = modifye_kliyan();
             break;
-        case MM_SAUVEGARDE:
-            ret = afiche_ekran_sovgade(MM_LIS_KLIYAN, MM_MENU_CLIENT);
+        case MM_SOVGAD:
+            ret = afiche_ekran_sovgade(MM_LIS_KLIYAN, MM_MENI_KLIYAN);
             break;
     }
     return ret;
@@ -48,22 +57,25 @@ int afiche_meni_kliyan() {
 int ajoute_kliyan() {
     ScreenClear();
     afficher_en_tete("Ajouter un client");
+    // Kreye varyab kap kenbe kliyan nou an
     Kliyan *kliyan = malloc(sizeof(Kliyan));
     kliyan->adres = malloc(sizeof(Adres));
     textcolor(WHITE);
 
+    // Mande itilizate a enfomasyon sou kliyan nap ajoute a
     fomile_kliyan(kliyan);
 
-
     printf("\n");
-    afiche_kliyan(*kliyan);
+    afiche_kliyan(*kliyan); //afiche enfomasyon kliyan an antre
     printf("\n\tEnregistrer les changements [(O)ui\\(N)on]: ");
     char chwa = getch();
     if (chwa == 'O' || chwa == 'o') {
-        //TODO save data
+        //Kliyan an deside sovgade done li
+        //Pran lis kliyan an
         Lis *lis_kliyan = jwenn_lis(MM_LIS_KLIYAN);
+        // mete id ke kliyan sa ka genyen
         kliyan->id = lis_kliyan->id_swivan;
-        mete_nan_lis(lis_kliyan, kliyan);
+        mete_nan_lis(lis_kliyan, kliyan);// Ajoute li nan lis la
         lis_kliyan->chanje = 1; // gen nouvo enfomasyon ki pa nan fichye
         afiche_alet("\n\tles informations ont ete enregistrees", SIKSE);
         textcolor(WHITE);
@@ -73,7 +85,7 @@ int ajoute_kliyan() {
     }
     printf("\n\tAppuyer sur une touche  pour retourner au menu...");
     getch();
-    return MM_MENU_CLIENT;
+    return MM_MENI_KLIYAN;
 }
 
 int modifye_kliyan() {
@@ -142,7 +154,7 @@ int modifye_kliyan() {
         printf("\n\tAppuyer sur une touche  pour retourner au menu...");
         getch();
     }
-    return MM_MENU_CLIENT;
+    return MM_MENI_KLIYAN;
 }
 
 void fomile_kliyan(Kliyan *kliyan) {
@@ -209,6 +221,6 @@ void fomile_kliyan(Kliyan *kliyan) {
 
 
 void kreye_paj_kliyan(Page *page) {
-    page->id = MM_MENU_CLIENT;
-    page->afficher = afiche_meni_kliyan;
+    page->id = MM_MENI_KLIYAN;
+    page->afiche = afiche_meni_kliyan;
 }

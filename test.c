@@ -54,10 +54,10 @@ int afficher_test() {
         mayon = mayon->apre;
     } while (mayon != NULL);
     getch();
-    return MM_ACCUEIL;
+    return MM_AKEY;
 }
 
 void creer_page_test(Page *page) {
     page->id = MM_TEST_DONNEES;
-    page->afficher = afficher_test;
+    page->afiche = afficher_test;
 }

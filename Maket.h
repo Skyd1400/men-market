@@ -103,18 +103,26 @@ typedef struct {
 // KOMANSMAN ENTEFAS
 
 typedef enum {
-    MM_ACCUEIL,
-    MM_MENU_CLIENT,
-    MM_AJOUT_CLIENT,
-    MM_MODIF_CLIENT,
-    MM_SAUVEGARDE,
+    MM_AKEY,
+    MM_MENI_KLIYAN,
+    MM_AJOU_KLIYAN,
+    MM_MODIF_KLIYAN,
+    MM_MENI_SIKISAL,
+    MM_MENI_PWODWI,
+    MM_MENI_VANT,
+    MM_MENI_RAPO,
+    MM_LIS_KLIYAN_PA_DEPATMAN,
+    MM_LIS_VANT_AK_PWODWI,
+    MM_LIS_KOMAND,
+    MM_LIS_SIKISAL_POU_APPWOVIZYONE,
+    MM_SOVGAD,
     MM_TEST_DONNEES,
     MM_SORTIE
 } TypePage;
 
 typedef struct {
     int  id;
-    int  (*afficher)();
+    int  (*afiche)();
 } Page;
 
 // FEN ENTEFAS

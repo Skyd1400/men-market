@@ -10,9 +10,9 @@
 typedef struct {
     char *nom;
     int page_suivante;
-} Menu;
+} Meni;
 
 
-int afficher_menu(Menu *menu, int choix_possibles);
+int afficher_menu(Meni *menu, int choix_possibles);
 
 #endif //CCINTERFACE_MENU_H
