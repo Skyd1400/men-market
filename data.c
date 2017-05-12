@@ -149,15 +149,10 @@ typedef struct {
     int c_champ; // nimewo kolon nou ye kounya
 } DoneAnaliz;
 
-void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
-    DoneAnaliz *p_data = ((DoneAnaliz *) done_analiz); // yon ti konvesyon
-    if (p_data->c_ligne > 0 &&
-        p_data->temp != NULL) { // sote premye liyn nan e asire ke espas pou stoke an egziste pou liyn nan
-        if (p_data->data_type == MM_LIS_KLIYAN) {
-            // Se nan fichye kliyan an nou ye
-            Kliyan *client = p_data->temp; // chanjman tip otomatik
-            int len_s = strlen(vale_chan);
-            switch (p_data->c_champ) {
+void trete_chan_kliyan(const void *vale_chan, const DoneAnaliz *done_tretman) {
+    Kliyan *client = done_tretman->temp; // chanjman tip otomatik
+    int len_s = strlen(vale_chan);
+    switch (done_tretman->c_champ) {
                 case 0: //Champ ID
                     client->id = atoi(vale_chan);
                     break;
@@ -186,9 +181,11 @@ void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
                 default:
                     break;
             }
-        } else if (p_data->data_type == MM_LIS_SIKISAL) {
-            Sikisal *temp = p_data->temp;
-            switch (p_data->c_champ) {
+}
+
+void trete_chan_sikisal(const void *vale_chan, const DoneAnaliz *done_tretman) {
+    Sikisal *temp = done_tretman->temp;
+    switch (done_tretman->c_champ) {
                 case 0: //chan Id
                     temp->id = atoi(vale_chan);
                     break;
@@ -215,6 +212,70 @@ void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
                     temp->telefon[8] = 0;
                     break;
             }
+}
+
+void trete_chan_pwodwi(void *vale_chan, DoneAnaliz *done_tretman) {
+    Pwodwi * pwodwi = done_tretman->temp;
+    switch (done_tretman->c_champ) {
+        case 0:
+            pwodwi->kod = atoi(vale_chan);
+            break;
+        case 1:
+            strncpy(pwodwi->deskripsyon, vale_chan, 100);
+            break;
+        case 2:
+            pwodwi->kantite = atoi(vale_chan);
+            break;
+        case 3:
+            pwodwi->pri_revant_init = atoi(vale_chan);
+            break;
+        case 4:
+            pwodwi->pri_vant_inite = atoi(vale_chan);
+            break;
+        case 5:
+            pwodwi->stok_sekirite = atoi(vale_chan);
+            break;
+        case 6:
+            pwodwi->stati = (StatiPwodwi)atoi(vale_chan);
+            break;
+    }
+}
+
+void trete_chan_pwodwi_sikisal(void * vale_chan, DoneAnaliz * done_tretman) {
+    PwodwiSikisal * pwodwi_sikisal = done_tretman->temp;
+    switch (done_tretman->c_champ) {
+        case 0:
+            pwodwi_sikisal->pwodwi = atoi(vale_chan);
+            break;
+        case 1:
+            pwodwi_sikisal->sikisal = atoi(vale_chan);
+            break;
+        case 2:
+            pwodwi_sikisal->kantite_min = atoi(vale_chan);
+            break;
+        case 3:
+            pwodwi_sikisal->kantite_dispo = atoi(vale_chan);
+            break;
+        case 4:
+            pwodwi_sikisal->kantite_max = atoi(vale_chan);
+            break;
+    }
+}
+
+void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
+    DoneAnaliz *p_data = ((DoneAnaliz *) done_analiz); // yon ti konvesyon
+    if (p_data->c_ligne > 0 &&
+        p_data->temp != NULL) { // sote premye liyn nan e asire ke espas pou stoke an egziste pou liyn nan
+        switch (p_data->data_type) {
+            case MM_LIS_KLIYAN:
+                trete_chan_kliyan(vale_chan, p_data);
+                break;
+            case MM_LIS_SIKISAL:
+                trete_chan_sikisal(vale_chan, p_data);
+                break;
+            case MM_LIS_PWODWI:
+                trete_chan_pwodwi(vale_chan, p_data);
+                break;
         }
     }
     p_data->c_champ++; // lot kolon apre a
@@ -236,6 +297,14 @@ void tretman_liyn(int c, void *data) {
             case MM_LIS_SIKISAL:
                 liste = jwenn_lis(MM_LIS_SIKISAL);
                 t = sizeof(Sikisal);
+                break;
+            case MM_LIS_PWODWI:
+                liste = jwenn_lis(MM_LIS_PWODWI);
+                t = sizeof(Pwodwi);
+                break;
+            case MM_LIS_PWODWI_SIKISAL:
+                liste = jwenn_lis(MM_LIS_PWODWI_SIKISAL);
+                t = sizeof(PwodwiSikisal);
                 break;
         }
         if (p_data->temp != NULL) {
@@ -261,8 +330,8 @@ void tretman_liyn(int c, void *data) {
     }
 }
 
-int charger_fichier(int type_donnees) {
-    char *fichier; // sa pral stoke non fichye a
+char *jwen_non_fichye(int type_donnees) {
+    char *fichier;
     switch (type_donnees) {
         // n'ap ba varyab la vale swivan ki lis nou deside ouve
         case MM_LIS_KLIYAN:
@@ -271,9 +340,29 @@ int charger_fichier(int type_donnees) {
         case MM_LIS_SIKISAL:
             fichier = FICHYE_SIKISAL;
             break;
+        case MM_LIS_PWODWI:
+            fichier = FICHYE_PWODWI;
+            break;
+        case MM_LIS_PWODWI_SIKISAL:
+            fichier = FICHYE_PWODWI_SIKISAL;
+            break;
+        case MM_LIS_VANT:
+            fichier = FICHYE_VANT;
+            break;
+        case MM_LIS_DETAY_VANT:
+            fichier = FICHYE_DETAY_VANT;
+            break;
         default:
-            return 1;
+            fichier = NULL;
     }
+    return fichier;
+}
+
+int charger_fichier(int type_donnees) {
+    char *fichier; // sa pral stoke non fichye a
+    fichier = jwen_non_fichye(type_donnees);
+    if (fichier == NULL)
+        return 1;
     FILE *fp = fopen(fichier, "r");
     if (!fp) {
         // fichye a pa egziste kreye li epi soti paske li pa gen pyes done
@@ -349,11 +438,19 @@ int ecrire_fichier(int type_donnees) {
     return 1;
 }
 
-void charger_donnees(int type) {
+void charger_donnees() {
     inisyalize_lis(&liste_clients, MM_LIS_KLIYAN); // nou kreye lis la
     inisyalize_lis(&liste_succursales, MM_LIS_SIKISAL); // nou kreye lis la
+    inisyalize_lis(&liste_produits, MM_LIS_PWODWI); // nou kreye lis la
+    inisyalize_lis(&liste_produits_succursales, MM_LIS_PWODWI_SIKISAL); // nou kreye lis la
+    inisyalize_lis(&liste_ventes, MM_LIS_VANT); // nou kreye lis la
+    inisyalize_lis(&liste_details_ventes, MM_LIS_DETAY_VANT); // nou kreye lis la
     charger_fichier(MM_LIS_KLIYAN); // nou ajoute done ki nan fichye an nan lis lan
     charger_fichier(MM_LIS_SIKISAL); // nou ajoute done ki nan fichye an nan lis lan
+    charger_fichier(MM_LIS_PWODWI); // nou ajoute done ki nan fichye an nan lis lan
+    charger_fichier(MM_LIS_PWODWI_SIKISAL); // nou ajoute done ki nan fichye an nan lis lan
+    charger_fichier(MM_LIS_VANT); // nou ajoute done ki nan fichye an nan lis lan
+    charger_fichier(MM_LIS_DETAY_VANT); // nou ajoute done ki nan fichye an nan lis lan
 }
 
 int afiche_ekran_sovgade(int type, TypePage paj_retou) {

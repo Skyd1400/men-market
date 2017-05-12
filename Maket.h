@@ -46,7 +46,7 @@ typedef struct {
 
 typedef struct {
     int kod;
-    char* deskripsyon;
+    char deskripsyon[101];
     int kantite;
     int pri_revant_init;
     int pri_vant_inite;
@@ -56,8 +56,8 @@ typedef struct {
 
 typedef struct {
     int id;
-    Pwodwi* pwodwi;
-    Sikisal* sikisal;
+    int  pwodwi;
+    int sikisal;
     int kantite_min;
     int kantite_dispo;
     int kantite_max;
@@ -77,6 +77,9 @@ typedef struct {
 } Kliyan;
 
 typedef struct {
+    int segond;
+    int minit;
+    int le;
     int jou;
     int mwa;
     int ane;
@@ -85,8 +88,8 @@ typedef struct {
 
 typedef struct {
     int id;
-    Kliyan* kliyan;
-    Sikisal* sikisal;
+    int kliyan;
+    int sikisal;
     Dat* dat;
 } Vant;
 
@@ -110,6 +113,8 @@ typedef enum {
     MM_MENI_SIKISAL,
     MM_MENI_PWODWI,
     MM_MENI_VANT,
+    MM_AJOU_VANT,
+    MM_RETOU_ATIK,
     MM_MENI_RAPO,
     MM_LIS_KLIYAN_PA_DEPATMAN,
     MM_LIS_VANT_AK_PWODWI,
@@ -155,5 +160,9 @@ typedef struct {
 
 #define FICHYE_KLIYAN "clients.dat"
 #define FICHYE_SIKISAL "succursales.dat"
+#define FICHYE_PWODWI "prod.dat"
+#define FICHYE_PWODWI_SIKISAL "prod_succ.dat"
+#define FICHYE_VANT "ventes.dat"
+#define FICHYE_DETAY_VANT "det_ventes.dat"
 
 #endif //MEN_MAKET_MAKET_H

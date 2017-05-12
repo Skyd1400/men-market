@@ -21,4 +21,6 @@ void afiche_alet(const char *, TipAlet);
 char * jwenn_non_depatman(Depatman depatman);
 void afiche_kliyan(Kliyan kliyan);
 
+void konveti_dat(const struct tm *dat_c, Dat *dat_nou);
+
 #endif //MEN_MAKET_UTIL_H
