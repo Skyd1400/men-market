@@ -7,8 +7,7 @@
 #include "Maket.h"
 #include "page.h"
 #include "menu.h"
-#include "rapp.h"
-#include "data.h"
+#include "done/strikti.h"
 #include "util.h"
 
 Meni meni_rapo[5] = {
@@ -43,7 +42,7 @@ int liste_kliyan() {
 
     Lis lis[10]; //varyab sa ap kenbe lis pou chak depatman yo
     for (int j = 0; j < 10; j++) {
-        inisyalize_lis(&lis[j], MM_LIS_KLIYAN);
+        inisyalize_lis(lis + j);
     }
     Lis * lis_kliyan = jwenn_lis(MM_LIS_KLIYAN);
     Mayon * mayon = lis_kliyan->premye; //pran premye mayon an

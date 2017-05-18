@@ -4,8 +4,9 @@
 
 #include "lib/conio2.h"
 #include "Maket.h"
-#include "data.h"
+#include "done/strikti.h"
 #include "page.h"
+#include "done/fichye.h"
 
 
 #define MAX_PAJ 6
@@ -31,16 +32,17 @@ int main(){
     kreye_paj_rapo(&paj[3]);
     creer_page_test(&paj[4]);
 
-    while (!fini) {
+    while (1) {
         // nap soti le varyab fini an chanje
         pwochen_paj = paj[paj_kouran].afiche();
+        if (pwochen_paj == MM_SORTIE) {
+            // Kondisyon pou nou soti rive
+            break;
+        }
         if (pwochen_paj != paj_kouran) {
             // Nou soti nan paj nou te ye anvan an
             for (int i = 0; i < nombre_de_pages; i++){
-                if (pwochen_paj == MM_SORTIE) {
-                    // Kondisyon pou nou soti rive
-                    fini = 1;
-                } else if (paj[i].id == pwochen_paj) {
+                if (paj[i].id == pwochen_paj) {
                     // nou jwenn lot paj la, nap chanje
                     denye_paj = paj_kouran; // pa vreman enpotan
                     paj_kouran = i;

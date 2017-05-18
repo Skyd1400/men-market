@@ -5,10 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "ges_vent.h"
 #include "Maket.h"
 #include "menu.h"
-#include "data.h"
+#include "done/strikti.h"
 #include "util.h"
 
 Meni meni_vant[3] = {

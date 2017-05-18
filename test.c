@@ -6,8 +6,7 @@
 #include <stdio.h>
 #include "lib/conio2.h"
 #include "Maket.h"
-#include "test.h"
-#include "data.h"
+#include "done/strikti.h"
 #include "page.h"
 
 

@@ -6,7 +6,7 @@
 #define MEN_MAKET_DATA_H
 
 
-#include "Maket.h"
+#include "../Maket.h"
 
 
 // Operations sur les listes
@@ -36,14 +36,7 @@ int retire_nan_lis(Lis *liste, int id, int effacer);
  *
  * Li konseye pou rele li premye fwa ou kreye yon lis. Sa ap pemet ke done ki egziste nan lis la valid
  */
-void inisyalize_lis(Lis *liste, int type);
-/*
- * Fonksyon sa ap load fichye ki asosye ak lis la e tou ajoute eleman yon nan li
- * a pati de fichye sa
- */
-void charger_donnees();
+void inisyalize_lis(Lis *type);
 
-int ecrire_fichier(int type);
-int afiche_ekran_sovgade(int type, TypePage paj_retou);
 
 #endif //MEN_MAKET_DATA_H

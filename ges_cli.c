@@ -8,19 +8,12 @@
 #include <mem.h>
 #include <ctype.h>
 #include "Maket.h"
-#include "ges_cli.h"
 #include "menu.h"
-#include "data.h"
+#include "done/strikti.h"
 #include "util.h"
 #include "antre.h"
+#include "done/fichye.h"
 
-
-Meni meni_kliyan[4] = {
-        {"Ajouter un client",                    MM_AJOU_KLIYAN},
-        {"Modifier un client",                   MM_MODIF_KLIYAN},
-        {"Sauvegarder le fichier sur le disque", MM_SOVGAD},
-        {"Retour",                               MM_AKEY}
-};
 
 /*
  * Fonksyon sa responsab pou jere paj ajoute yon kliyan
@@ -40,6 +33,13 @@ void fomile_kliyan(Kliyan *kliyan);
 int afiche_meni_kliyan() {
     ScreenClear();
     afficher_en_tete("Module Clients");
+
+    Meni meni_kliyan[4] = {
+            {"Ajouter un client",                    MM_AJOU_KLIYAN},
+            {"Modifier un client",                   MM_MODIF_KLIYAN},
+            {"Sauvegarder le fichier sur le disque", MM_SOVGAD},
+            {"Retour",                               MM_AKEY}
+    };
     int ret = afficher_menu(meni_kliyan, 4);
     switch (ret) {
         case MM_AJOU_KLIYAN:

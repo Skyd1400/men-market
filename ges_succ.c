@@ -5,11 +5,10 @@
 #include <malloc.h>
 #include <stdio.h>
 #include <mem.h>
-#include "ges_succ.h"
 #include "Maket.h"
 #include "page.h"
 #include "menu.h"
-#include "data.h"
+#include "done/strikti.h"
 #include "util.h"
 #include "antre.h"
 
