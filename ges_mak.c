@@ -2,16 +2,10 @@
 // Created by Hash Skyd on 4/5/2017.
 //
 
-#include "ges_mak.h"
 #include "lib/conio2.h"
 #include "Maket.h"
-#include "acc.h"
-#include "test.h"
 #include "data.h"
-#include "ges_cli.h"
-#include "rapp.h"
-#include "ges_vent.h"
-#include "ges_succ.h"
+#include "page.h"
 
 
 #define MAX_PAJ 6
