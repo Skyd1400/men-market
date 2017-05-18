@@ -11,6 +11,7 @@
 #include "../lib/csv.h"
 #include "../util.h"
 #include "../page.h"
+#include "../Maket.h"
 
 typedef struct {
     int data_type; // tip lis nap trete
@@ -85,7 +86,7 @@ void trete_chan_sikisal(const void *vale_chan, const DoneAnaliz *done_tretman) {
 }
 
 void trete_chan_pwodwi(void *vale_chan, DoneAnaliz *done_tretman) {
-    Pwodwi * pwodwi = done_tretman->temp;
+    Pwodwi *pwodwi = done_tretman->temp;
     switch (done_tretman->c_champ) {
         case 0:
             pwodwi->kod = atoi(vale_chan);
@@ -106,13 +107,13 @@ void trete_chan_pwodwi(void *vale_chan, DoneAnaliz *done_tretman) {
             pwodwi->stok_sekirite = atoi(vale_chan);
             break;
         case 6:
-            pwodwi->stati = (StatiPwodwi)atoi(vale_chan);
+            pwodwi->stati = (StatiPwodwi) atoi(vale_chan);
             break;
     }
 }
 
-void trete_chan_pwodwi_sikisal(void * vale_chan, DoneAnaliz * done_tretman) {
-    PwodwiSikisal * pwodwi_sikisal = done_tretman->temp;
+void trete_chan_pwodwi_sikisal(void *vale_chan, DoneAnaliz *done_tretman) {
+    PwodwiSikisal *pwodwi_sikisal = done_tretman->temp;
     switch (done_tretman->c_champ) {
         case 0:
             pwodwi_sikisal->pwodwi = atoi(vale_chan);
@@ -255,13 +256,13 @@ int charger_fichier(int type_donnees) {
     return 0;
 }
 
-char * antet_kliyan() {
+char *antet_kliyan() {
     return "\"ID_client\",\"nom\",\"type\",\"no\",\"rue\",\"ville\",\"departement\",\"telephone\"";
 }
 
-char * liyn_kliyan(void * done) {
-    Kliyan * kliyan = done;
-    char * buffer = malloc(1024);
+char *liyn_kliyan(void *done) {
+    Kliyan *kliyan = done;
+    char *buffer = malloc(1024);
     snprintf(buffer, 1024, "\n\"%d\",\"%s\",\"%c\",\"%d\",\"%s\",\"%s\",\"%d\",\"%s\"",
              kliyan->id,
              kliyan->non,
@@ -274,10 +275,99 @@ char * liyn_kliyan(void * done) {
     return buffer;
 }
 
+char *antet_sikisal() {
+    return "\"id\",\"description\",\"no\",\"rue\",\"ville\",\"departement\",\"responsable\",\"telephone\"";
+}
+
+char *liyn_sikisal(void *done) {
+    Sikisal *sikisal = done;
+    char *buffer = malloc(1024);
+    snprintf(buffer, 1024, "\n\"%d\",\"%s\",\"%d\",\"%s\",\"%s\",\"%d\",\"%s\",\"%s\"",
+             sikisal->id,
+             sikisal->deskripsyon,
+             sikisal->adres->no,
+             sikisal->adres->ri,
+             sikisal->adres->vil,
+             sikisal->adres->depatman,
+             sikisal->responsab,
+             sikisal->telefon);
+    return buffer;
+}
+
+char *antet_pwodwi() {
+    return "\"cod_prod\",\"desc_prod\",\"quantite\",\"prix_revient_unit\",\"prix_vente_unit\",\"stock_sec\",\"statut\"";
+}
+
+char *liyn_pwodwi(void *done) {
+    Pwodwi *pwodwi = done;
+    char *buffer = malloc(1024);
+    snprintf(buffer, 1024, "\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"",
+             pwodwi->kod,
+             pwodwi->deskripsyon,
+             pwodwi->kantite,
+             pwodwi->pri_revant_init,
+             pwodwi->pri_vant_inite,
+             pwodwi->stok_sekirite,
+             pwodwi->stati);
+    return buffer;
+}
+
+char *antet_pwodwi_sikisal() {
+    return "\"prod_id\",\"succ_id\",\"qte_min\",\"qte_disp\",\"qte_max\"";
+}
+
+char *liyn_pwodwi_sikisal(void *done) {
+    PwodwiSikisal *pwodwiSikisal = done;
+    char *buffer = malloc(1024);
+    snprintf(buffer, 1024, "\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"",
+             pwodwiSikisal->pwodwi,
+             pwodwiSikisal->sikisal,
+             pwodwiSikisal->kantite_min,
+             pwodwiSikisal->kantite_dispo,
+             pwodwiSikisal->kantite_max);
+    return buffer;
+}
+
+char *antet_vant() {
+    return "\"id\",\"client_id\",\"succ_id\",\"date\"";
+};
+
+char *liyn_vant(void *done) {
+    Vant *vant = done;
+    char *buffer = malloc(1024);
+    snprintf(buffer, 1024, "\"%d\",\"%d\",\"%d\",\"%d/%d/%d %d:%d:%d\"",
+             vant->id,
+             vant->kliyan,
+             vant->sikisal,
+             vant->dat->jou,
+             vant->dat->mwa,
+             vant->dat->ane,
+             vant->dat->le,
+             vant->dat->minit,
+             vant->dat->segond);
+    return buffer;
+};
+
+char *antet_detay_vant() {
+    return "\"id\",\"vente_id\",\"code_produit\",\"quantite\",\"prix_unit\"";
+}
+
+char *liyn_detay_vant(void *done) {
+    DetayVant *detay_vant = done;
+    char *buffer = malloc(1024);
+    snprintf(buffer, 1024, "\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"",
+             detay_vant->id,
+             detay_vant->vant,
+             detay_vant->pwodwi,
+             detay_vant->kantite_atik,
+             detay_vant->pri_inite);
+    return buffer;
+};
+
 int ecrire_fichier(int type_donnees) {
     char *fichier = jwen_non_fichye(type_donnees); // sa pral stoke non fichye a
-    char * (*antet)(); //fonksyon kap jenere antet fichye a
-    char * (*liyn)(void *); //fonksyon kap jenere teks pou chak liyn
+    char *(*antet)(); //fonksyon kap jenere antet fichye a
+    char *(*liyn)(void *); //fonksyon kap jenere teks pou chak liyn
     switch (type_donnees) {
         // n'ap ba varyab la vale swivan ki lis nou deside ouve
         case MM_LIS_KLIYAN:
@@ -285,6 +375,24 @@ int ecrire_fichier(int type_donnees) {
             liyn = liyn_kliyan;
             break;
         case MM_LIS_SIKISAL:
+            antet = antet_sikisal;
+            liyn = liyn_sikisal;
+            break;
+        case MM_LIS_PWODWI:
+            antet = antet_pwodwi;
+            liyn = liyn_pwodwi;
+            break;
+        case MM_LIS_PWODWI_SIKISAL:
+            antet = antet_pwodwi_sikisal;
+            liyn = liyn_pwodwi_sikisal;
+            break;
+        case MM_LIS_VANT:
+            antet = antet_vant;
+            liyn = liyn_vant;
+            break;
+        case MM_LIS_DETAY_VANT:
+            antet = antet_detay_vant;
+            liyn = liyn_detay_vant;
             break;
         default:
             return 1;
@@ -293,12 +401,12 @@ int ecrire_fichier(int type_donnees) {
     FILE *fp = fopen(fichier, "w");
     fprintf(fp, antet());
     Lis *lis = jwenn_lis(type_donnees);
-    Mayon * mayon = lis->premye;
+    Mayon *mayon = lis->premye;
     while (mayon != NULL) {
         if (mayon->done != NULL) {
             char *text = liyn(mayon->done);
             fprintf(fp, text);
-            free(text);
+            free(text); // lew lwe fok ou remet
         }
         mayon = mayon->apre;
     }
@@ -321,27 +429,16 @@ void charger_donnees() {
     charger_fichier(MM_LIS_DETAY_VANT); // nou ajoute done ki nan fichye an nan lis lan
 }
 
-int afiche_ekran_sovgade(int type, TypePage paj_retou) {
+int afiche_ekran_sovgade(int *type, int nonb, TypePage paj_retou) {
     ScreenClear();
     afficher_en_tete("Sauvegarde");
     textcolor(WHITE);
-    Lis * lis = jwenn_lis(type);
-    int ekri = lis->chanje;
-    if (!ekri) {
-        afiche_alet("\n\tLes information n'ont pas ete modifiees", NOMAL);
-        textcolor(WHITE);
-        printf("\n\tForcer la sauvegarde? [(O)ui\\(N)on]: ");
-        char chwa = getch();
-        if (chwa == 'O' || chwa == 'o') {
-            ekri = 1;
-        }
+    afiche_alet("\n\tSauvegarde du(es) fichier(s)...", AVETISMAN);
+    for (int i = 0; i < nonb; i++) {
+        ecrire_fichier(type[i]);
     }
-    if (ekri) {
-        afiche_alet("\n\tSauvegarde du fichier...", AVETISMAN);
-        ecrire_fichier(type);
-        afiche_alet("\n\tFichier sauvegarde", SIKSE);
-        textcolor(WHITE);
-    }
+    afiche_alet("\n\tFichier(s) sauvegarde(s)", SIKSE);
+    textcolor(WHITE);
     printf("\n\tAppuyer sur une touche  pour retourner au menu...");
     getch();
     return paj_retou;

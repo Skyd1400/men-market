@@ -7,6 +7,7 @@
 #ifndef MEN_MAKET_UTIL_H
 #define MEN_MAKET_UTIL_H
 
+#include <time.h>
 #include "Maket.h"
 
 typedef enum {

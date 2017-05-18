@@ -11,8 +11,7 @@
 #include "done/strikti.h"
 #include "util.h"
 #include "antre.h"
-
-
+#include "done/fichye.h"
 
 
 int ajoute_sikisal() {
@@ -71,6 +70,7 @@ int afiche_meni_sikisal() {
             {"Retour",                               MM_AKEY}
     };
     int ret = afficher_menu(meni_sikisal, 4);
+    int fichye[1] = {MM_LIS_SIKISAL};
     switch (ret) {
         case MM_AJOU_SIKISAL:
             ret = ajoute_sikisal();
@@ -79,7 +79,7 @@ int afiche_meni_sikisal() {
             ret = modifye_sikisal();
             break;
         case MM_SOVGAD:
-            ret = afiche_ekran_sovgade(MM_LIS_SIKISAL, MM_MENI_SIKISAL);
+            ret = afiche_ekran_sovgade(fichye, 1, MM_MENI_SIKISAL);
             break;
     }
     return ret;

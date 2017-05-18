@@ -95,8 +95,8 @@ typedef struct {
 
 typedef struct {
     int id;
-    Vant* vant;
-    Pwodwi *pwodwi;
+    int vant;
+    int pwodwi;
     int kantite_atik;
     int pri_inite;
 } DetayVant;

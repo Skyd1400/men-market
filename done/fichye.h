@@ -14,6 +14,6 @@
 void charger_donnees();
 
 int ecrire_fichier(int type);
-int afiche_ekran_sovgade(int type, TypePage paj_retou);
+int afiche_ekran_sovgade(int *type, int nonb, TypePage paj_retou);
 
 #endif //MEN_MAKET_FICHYE_H

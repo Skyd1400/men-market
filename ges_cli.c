@@ -41,6 +41,7 @@ int afiche_meni_kliyan() {
             {"Retour",                               MM_AKEY}
     };
     int ret = afficher_menu(meni_kliyan, 4);
+    int fichye[1] = {MM_LIS_KLIYAN};
     switch (ret) {
         case MM_AJOU_KLIYAN:
             ret = ajoute_kliyan();
@@ -49,7 +50,7 @@ int afiche_meni_kliyan() {
             ret = modifye_kliyan();
             break;
         case MM_SOVGAD:
-            ret = afiche_ekran_sovgade(MM_LIS_KLIYAN, MM_MENI_KLIYAN);
+            ret = afiche_ekran_sovgade(fichye, 1, MM_MENI_KLIYAN);
             break;
     }
     return ret;
