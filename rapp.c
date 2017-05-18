@@ -19,22 +19,10 @@ Meni meni_rapo[5] = {
 };
 
 
-int liste_kliyan();
 
 /*
- * Fonksyon sa afiche meni pou modil rapo a e responsab jesyon pou paj modil la
+ * Fonksyon sa afiche paj pou liste kliyan an
  */
-int afiche_meni_rapo() {
-    ScreenClear();
-    afficher_en_tete("Rapports");
-    int ret = afficher_menu(meni_rapo, 5);
-    switch (ret){
-        case MM_LIS_KLIYAN_PA_DEPATMAN:
-            ret = liste_kliyan();
-    }
-    return ret;
-}
-
 int liste_kliyan() {
     ScreenClear();
     afficher_en_tete("Liste des clients");
@@ -66,10 +54,178 @@ int liste_kliyan() {
         }
         printf("\n"); // yon ti espas a la fin
     }
-    printf("\nAppuyer sur une touche  pour retourner au menu...");
+    printf("\n\tAppuyer sur une touche  pour retourner au menu...");
     getch();
     return MM_MENI_RAPO;
 }
+
+
+int liste_vant() {
+    ScreenClear();
+    afficher_en_tete("Liste des ventes");
+    textcolor(WHITE);
+
+    Lis * lis_pwodwi = jwenn_lis(MM_LIS_PWODWI);
+    Mayon * mayon_pwodwi = lis_pwodwi->premye;
+    while (mayon_pwodwi != NULL) {
+        Pwodwi * pwodwi = mayon_pwodwi->done;
+        int montan_total = 0;
+        int kantite_total = 0;
+
+        printf("\t-------------------------------------------------------------");
+        printf("\n\tProduit : %s", pwodwi->deskripsyon);
+        printf("\n\t\tCode : %d", pwodwi->kod);
+        printf("\n\t\tMontant par Succursale:");
+
+        Lis * lis_sikisal = jwenn_lis(MM_LIS_SIKISAL);
+        Mayon * mayon_sikisal = lis_sikisal->premye;
+        while (mayon_sikisal != NULL) {
+            //Pou chak sikisal
+            Sikisal * sikisal = mayon_sikisal->done;
+            int montan = 0;
+
+            Lis * lis_vant = jwenn_lis(MM_LIS_VANT);
+            Mayon * mayon_vant = lis_vant->premye;
+            while (mayon_vant != NULL) {
+                //Pou chak vant nan sikisal sa
+                Vant * vant = mayon_vant->done;
+
+                if (vant->sikisal == sikisal->id) {
+                    Lis * lis_detay_vant = jwenn_lis(MM_LIS_DETAY_VANT);
+                    Mayon * mayon_detay_vant = lis_detay_vant->premye;
+                    while (mayon_detay_vant != NULL) {
+                        //Pou chak vant nan sikisal sa
+                        DetayVant * detayVant = mayon_detay_vant->done;
+
+                        if (detayVant->vant == vant->id) {
+                            montan += detayVant->kantite_atik * detayVant->pri_inite;
+                            kantite_total += detayVant->kantite_atik;
+                        }
+
+                        mayon_detay_vant = mayon_detay_vant->apre;
+                    }
+                }
+
+                mayon_vant = mayon_vant->apre;
+            }
+
+            printf("\n\t\t\t(%d) %s -> %d", sikisal->id, sikisal->deskripsyon, montan);
+
+            montan_total += montan;
+            mayon_sikisal = mayon_sikisal->apre;
+        }
+
+        printf("\n\t\tMontant total -> %d", montan_total);
+        printf("\n\t\tQuantite totale vendue -> %d\n", kantite_total);
+        mayon_pwodwi = mayon_pwodwi->apre; // pran lot ki swiv li a
+    }
+
+    printf("\n\n\tAppuyer sur une touche  pour retourner au menu...");
+    getch();
+    return MM_MENI_RAPO;
+}
+
+int liste_komand() {
+    ScreenClear();
+    afficher_en_tete("Liste des commandes");
+    textcolor(WHITE);
+
+    Lis * lis_pwodwi = jwenn_lis(MM_LIS_PWODWI);
+    Mayon * mayon_pwodwi = lis_pwodwi->premye;
+    while (mayon_pwodwi != NULL) {
+        Pwodwi * pwodwi = mayon_pwodwi->done;
+        int montan_total = 0;
+        int kantite_total = 0;
+
+        if (pwodwi->kantite < pwodwi->stok_sekirite) {
+
+            printf("\t-------------------------------------------------------------");
+            printf("\n\tProduit : %s", pwodwi->deskripsyon);
+            printf("\n\t\tCode : %d", pwodwi->kod);
+            printf("\n\t\tQuantite a commander: %d\n", pwodwi->stok_sekirite * 2 - pwodwi->kantite);
+        }
+
+        mayon_pwodwi = mayon_pwodwi->apre; // pran lot ki swiv li a
+    }
+    printf("\t-------------------------------------------------------------");
+
+    printf("\n\n\tAppuyer sur une touche  pour retourner au menu...");
+    getch();
+    return MM_MENI_RAPO;
+}
+
+int liste_sikisal() {
+    ScreenClear();
+    afficher_en_tete("Succursales a approvisionner");
+    textcolor(WHITE);
+
+    Lis * lis_sikisal = jwenn_lis(MM_LIS_SIKISAL);
+    Mayon * mayon_sikisal = lis_sikisal->premye;
+    while (mayon_sikisal != NULL) {
+        //Pou chak sikisal
+        Sikisal * sikisal = mayon_sikisal->done;
+        int apwovizyonman_reki = 0;
+
+        printf("\t-------------------------------------------------------------");
+        printf("\n\tSuccursale : %s", sikisal->deskripsyon);
+        printf("\n\t\tId : %d", sikisal->id);
+        printf("\n\t\tA approvisionner en:");
+
+        Lis * lis_pwodwi_sikisal = jwenn_lis(MM_LIS_PWODWI_SIKISAL);
+        Mayon * mayon_pwodwi_sikisal = lis_pwodwi_sikisal->premye;
+        while (mayon_pwodwi_sikisal != NULL) {
+            PwodwiSikisal * pwodwi_sikisal = mayon_pwodwi_sikisal->done;
+
+            if (pwodwi_sikisal->sikisal == sikisal->id) {
+                if (pwodwi_sikisal->kantite_dispo <= pwodwi_sikisal->kantite_min) {
+                    apwovizyonman_reki = 1;
+                    Pwodwi * pwodwi = jwenn_nan_lis(jwenn_lis(MM_LIS_PWODWI), pwodwi_sikisal->pwodwi, 1);
+                    printf("\n\t\t\t%s | Code -> %d | Quantite requis -> %d",
+                           pwodwi->deskripsyon,
+                           pwodwi->kod,
+                           pwodwi_sikisal->kantite_max - pwodwi_sikisal->kantite_min);
+                }
+            }
+            mayon_pwodwi_sikisal = mayon_pwodwi_sikisal->apre; // pran lot ki swiv li a
+        }
+        if (!apwovizyonman_reki) printf("\n\t\t\tAucun produit");
+
+        printf("\n");
+        mayon_sikisal = mayon_sikisal->apre;
+    }
+    printf("\t-------------------------------------------------------------");
+
+    printf("\n\n\tAppuyer sur une touche  pour retourner au menu...");
+    getch();
+    return MM_MENI_RAPO;
+
+    return MM_MENI_RAPO;
+}
+
+/*
+ * Fonksyon sa afiche meni pou modil rapo a e responsab jesyon pou paj modil la
+ */
+int afiche_meni_rapo() {
+    ScreenClear();
+    afficher_en_tete("Rapports");
+    int ret = afficher_menu(meni_rapo, 5);
+    switch (ret){
+        case MM_LIS_KLIYAN_PA_DEPATMAN:
+            ret = liste_kliyan();
+            break;
+        case MM_LIS_VANT_AK_PWODWI:
+            ret = liste_vant();
+            break;
+        case MM_LIS_KOMAND:
+            ret = liste_komand();
+            break;
+        case MM_LIS_SIKISAL_POU_APPWOVIZYONE:
+            ret = liste_sikisal();
+    }
+    return ret;
+}
+
+
 
 void kreye_paj_rapo(Paj * page) {
     page->id = MM_MENI_RAPO;
