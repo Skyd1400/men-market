@@ -68,7 +68,7 @@ int ajoute_vant() {
 
     int id_sikisal = 0;
     do {
-        printf("\tEntrez l'identifiant du succursale: ");
+        printf("\tEntrez l'identifiant de la succursale: ");
         gets(buffer);
         id_sikisal = atoi(buffer);
         if (id_sikisal <= 0) {
@@ -81,7 +81,7 @@ int ajoute_vant() {
     Lis *lis_sikisal = jwenn_lis(MM_LIS_SIKISAL);
     Mayon *mayon_sikisal = jwenn_nan_lis(lis_sikisal, id_sikisal, 0);
     if (mayon_sikisal == NULL) {
-        afiche_alet("\tLe succursale n'existe pas", DANJE);
+        afiche_alet("\tCette succursale n'existe pas", DANJE);
         textcolor(WHITE);
         printf("\n\tAppuyer sur une touche  pour retourner au menu...");
         getch();
@@ -106,7 +106,7 @@ int ajoute_vant() {
     printf("\n");
     printf("\n\tVente:");
     printf("\n\tNom du client -> %s", kliyan->non);
-    printf("\n\tDescription du succursale -> %s", sikisal->deskripsyon);
+    printf("\n\tDescription de la succursale -> %s", sikisal->deskripsyon);
     printf("\n\tDate de la vente -> %d/%d/%d - %02d:%02d:%02d\n",
            vant->dat->jou,
            vant->dat->mwa + 1,
@@ -162,7 +162,7 @@ int afiche_meni_vant(){
 
 
 
-void kreye_paj_vant(Page *page) {
+void kreye_paj_vant(Paj *page) {
     page->id = MM_MENI_VANT;
     page->afiche = afiche_meni_vant;
 }

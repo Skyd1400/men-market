@@ -40,7 +40,7 @@ typedef struct {
     int id;
     char deskripsyon[100];
     Adres* adres;
-    char responsab[20];
+    char responsab[49];
     char telefon[9];
 } Sikisal;
 
@@ -111,6 +111,8 @@ typedef enum {
     MM_AJOU_KLIYAN,
     MM_MODIF_KLIYAN,
     MM_MENI_SIKISAL,
+    MM_AJOU_SIKISAL,
+    MM_MODIF_SIKISAL,
     MM_MENI_PWODWI,
     MM_MENI_VANT,
     MM_AJOU_VANT,
@@ -128,7 +130,7 @@ typedef enum {
 typedef struct {
     int  id;
     int  (*afiche)();
-} Page;
+} Paj;
 
 // FEN ENTEFAS
 

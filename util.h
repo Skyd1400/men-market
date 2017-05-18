@@ -20,6 +20,7 @@ typedef enum {
 void afiche_alet(const char *, TipAlet);
 char * jwenn_non_depatman(Depatman depatman);
 void afiche_kliyan(Kliyan kliyan);
+void afiche_sikisal(Sikisal sikisal);
 
 void konveti_dat(const struct tm *dat_c, Dat *dat_nou);
 

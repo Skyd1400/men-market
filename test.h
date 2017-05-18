@@ -7,6 +7,6 @@
 #ifndef MEN_MAKET_TEST_H
 #define MEN_MAKET_TEST_H
 
-void creer_page_test(Page * page);
+void creer_page_test(Paj * page);
 
 #endif //MEN_MAKET_TEST_H

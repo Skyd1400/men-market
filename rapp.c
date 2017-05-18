@@ -72,7 +72,7 @@ int liste_kliyan() {
     return MM_MENI_RAPO;
 }
 
-void kreye_paj_rapo(Page * page) {
+void kreye_paj_rapo(Paj * page) {
     page->id = MM_MENI_RAPO;
     page->afiche = afiche_meni_rapo;
 }

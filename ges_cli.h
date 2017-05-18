@@ -6,6 +6,6 @@
 #define MEN_MAKET_GES_CLI_H
 
 
-void kreye_paj_kliyan(Page *page);
+void kreye_paj_kliyan(Paj *page);
 
 #endif //MEN_MAKET_GES_CLI_H

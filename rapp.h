@@ -10,6 +10,6 @@
 /*
  * Fonksyon sa kreye paj rapo a
  */
-void kreye_paj_rapo(Page *);
+void kreye_paj_rapo(Paj *);
 
 #endif //MEN_MAKET_RAPP_H

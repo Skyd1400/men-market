@@ -27,7 +27,7 @@ int afficher_accueil() {
     return  afficher_menu(meni_akey, 6);
 }
 
-void creer_page_accueil(Page* page){
+void creer_page_accueil(Paj* page){
     page->id = MM_AKEY;
     page->afiche = afficher_accueil;
 }

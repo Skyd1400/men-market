@@ -205,7 +205,7 @@ void trete_chan_sikisal(const void *vale_chan, const DoneAnaliz *done_tretman) {
                     temp->adres->depatman = atoi(vale_chan);
                     break;
                 case 6: // chan depatman
-                    strncpy(temp->responsab, vale_chan, 19);
+                    strncpy(temp->responsab, vale_chan, 49);
                     break;
                 case 7: // Champ Telephone
                     strncpy(temp->telefon, vale_chan, 8);

@@ -76,3 +76,15 @@ void afiche_kliyan(Kliyan kliyan) {
     printf("\t\t\tDepartement -> %s\n", jwenn_non_depatman(kliyan.adres->depatman)); // TODO depatman nimewo
     printf("\t\tTelephone -> %s\n", kliyan.telefon);
 }
+
+void afiche_sikisal(Sikisal sikisal) {
+    printf("\tSuccursale:\n");
+    printf("\t\tDescription -> %s\n", sikisal.deskripsyon);
+    printf("\t\tResponsable -> %s\n", sikisal.responsab);
+    printf("\t\tAdresse :\n");
+    printf("\t\t\tNumero -> %d\n", sikisal.adres->no);
+    printf("\t\t\tRue -> %s\n", sikisal.adres->ri);
+    printf("\t\t\tVille -> %s\n", sikisal.adres->vil);
+    printf("\t\t\tDepartement -> %s\n", jwenn_non_depatman(sikisal.adres->depatman)); // TODO depatman nimewo
+    printf("\t\tTelephone -> %s\n", sikisal.telefon);
+}

@@ -57,7 +57,7 @@ int afficher_test() {
     return MM_AKEY;
 }
 
-void creer_page_test(Page *page) {
+void creer_page_test(Paj *page) {
     page->id = MM_TEST_DONNEES;
     page->afiche = afficher_test;
 }

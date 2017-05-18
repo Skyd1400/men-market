@@ -11,33 +11,31 @@
 #include "ges_cli.h"
 #include "rapp.h"
 #include "ges_vent.h"
+#include "ges_succ.h"
 
 
-#define MAX_PAGES 5
-
-Page paj[MAX_PAGES];
-int paj_kouran;
-int pwochen_paj;
-int denye_paj;
-int nombre_de_pages;
-
+#define MAX_PAJ 6
 
 /*
  * main nou an
  */
 int main(){
+    Paj paj[MAX_PAJ];
+    int paj_kouran = 0;
+    int pwochen_paj = 0;
+    int denye_paj = 0;
+    int nombre_de_pages = MAX_PAJ;
     int fini = 0; // drapo pou jere soti nan pwogram nan
     inittextinfo();
     //mete informasyon fichye yo nan memwa
     charger_donnees();
     //kreye paj yo
     creer_page_accueil(&paj[0]);
+    kreye_paj_sikisal(&paj[5]);
     kreye_paj_kliyan(&paj[1]);
     kreye_paj_vant(&paj[2]);
     kreye_paj_rapo(&paj[3]);
     creer_page_test(&paj[4]);
-    paj_kouran = 0; // nap komanse nan paj akey la
-    nombre_de_pages = MAX_PAGES;
 
     while (!fini) {
         // nap soti le varyab fini an chanje

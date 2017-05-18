@@ -12,6 +12,7 @@
 #include "menu.h"
 #include "data.h"
 #include "util.h"
+#include "antre.h"
 
 
 Meni meni_kliyan[4] = {
@@ -35,15 +36,6 @@ int modifye_kliyan();
  * Sa responsab pou mande itilizate a enfomasyon sou yon kliyan
  */
 void fomile_kliyan(Kliyan *kliyan);
-
-
-void antre_non(Kliyan * kliyan, char * buffer);
-
-void antre_tip(Kliyan *kliyan, char *buffer);
-
-void antre_adres(Kliyan *kliyan, char *buffer);
-
-void antre_telefon(Kliyan *kliyan, char *buffer);
 
 int afiche_meni_kliyan() {
     ScreenClear();
@@ -72,7 +64,15 @@ int ajoute_kliyan() {
     textcolor(WHITE);
 
     // Mande itilizate a enfomasyon sou kliyan nap ajoute a
-    fomile_kliyan(kliyan);
+
+    antre_teks("\n\tEntrez le nom du client :", kliyan->non, 50);
+
+    char * chwa_tip[2] = {"Particulier", "Entreprise"};
+    kliyan->tip = antre_chwa("\tEntrez le type de client\n", chwa_tip, 2);
+
+    antre_adres(kliyan->adres);
+
+    antre_nimewo_telefon(kliyan->telefon);
 
     printf("\n");
     afiche_kliyan(*kliyan); //afiche enfomasyon kliyan an antre
@@ -104,6 +104,7 @@ int modifye_kliyan() {
     char buffer[1024];
     textcolor(WHITE);
 
+    // Mande itilizate a id
     int id = 0;
     printf("\n");
     do {
@@ -111,6 +112,7 @@ int modifye_kliyan() {
         gets(buffer);
         id = atoi(buffer);
         if (id <= 0) {
+            // Pa gen mwayen pou id a pi piti ke zewo
             textcolor(RED);
             printf("\tL'identifiant est incorrect\n");
             textcolor(WHITE);
@@ -120,53 +122,51 @@ int modifye_kliyan() {
     Lis *lis = jwenn_lis(MM_LIS_KLIYAN);
     Mayon *mayon = jwenn_nan_lis(lis, id, 0);
     if (mayon == NULL) {
+        // Wow, nou pa jwenn li
         afiche_alet("\tLe client n'existe pas", DANJE);
         textcolor(WHITE);
         printf("\n\tAppuyer sur une touche  pour retourner au menu...");
         getch();
     } else {
-        // Kliyan egziste
+        // Kliyan an egziste
         Kliyan *kliyan = mayon->done;
         snprintf(buffer, 1024, "\tVous allez modifier le client : %s", kliyan->non);
         afiche_alet(buffer, AVETISMAN);
         textcolor(WHITE);
 
+        // Kliyan an ka chazi sa li vle modifye
+        char * opsyon_modifikasyon[4] = {
+                "Nom",
+                "Type",
+                "Adresse",
+                "Telephone"
+        };
+        int chwa_chan = antre_chwa("\n\tQue voulez-vous modifier? \n", opsyon_modifikasyon, 4);
 
-        int chwa_chan_modifikasyon = 0;
-        printf("\n\tQue voulez-vous modifier? \n");
-        printf("\t1) Nom\n");
-        printf("\t2) Type\n");
-        printf("\t3) Adresse\n");
-        printf("\t4) Telephone\n");
-        do {
-            printf("\tChoisissez un numero : ");
-            gets(buffer);
-            chwa_chan_modifikasyon = atoi(buffer);
-        } while (chwa_chan_modifikasyon <= 0 || chwa_chan_modifikasyon > 4);
-
-
-
+        // Yon done tampore pou modifikasyon
         Kliyan *nouvo_kliyan = malloc(sizeof(Kliyan));
         nouvo_kliyan->adres = malloc(sizeof(Adres));
-        //
 
-        switch (chwa_chan_modifikasyon) {
+
+        char * chwa_tip[2] = {"Particulier", "Entreprise"}; // nou pa ka mete li andedan switch la
+        //
+        switch (chwa_chan) {
             case 1: // chan non
-                antre_non(nouvo_kliyan, buffer);
+                antre_teks("\n\tEntrez le nom du client :", nouvo_kliyan->non, 50);
                 snprintf(buffer, 1024, "\tAncien Nom : %s", kliyan->non);
                 afiche_alet(buffer, DANJE);
                 snprintf(buffer, 1024, "\tNouveau Nom : %s", nouvo_kliyan->non);
                 afiche_alet(buffer, SIKSE);
                 break;
             case 2: // chan tip
-                antre_tip(nouvo_kliyan, buffer);
+                nouvo_kliyan->tip = antre_chwa("\tEntrez le type de client\n", chwa_tip, 2);
                 snprintf(buffer, 1024, "\tAncien Type : %s", kliyan->tip == ENTREPRISE? "Entreprise": "Particulier");
                 afiche_alet(buffer, DANJE);
                 snprintf(buffer, 1024, "\tNouveau Nom : %s", kliyan->tip == ENTREPRISE? "Entreprise": "Particulier");
                 afiche_alet(buffer, SIKSE);
                 break;
             case 3: // chan adres
-                antre_adres(nouvo_kliyan, buffer);
+                antre_adres(nouvo_kliyan->adres);
                 snprintf(buffer, 1024,
                          "\tAncien Adresse : \n\t\tNumero : %d\n\t\tRue : %s\n\t\tVille : %s\n\t\tDepartement : %s",
                          kliyan->adres->no,
@@ -183,7 +183,7 @@ int modifye_kliyan() {
                 afiche_alet(buffer, SIKSE);
                 break;
             case 4: // chan non
-                antre_telefon(nouvo_kliyan, buffer);
+                antre_nimewo_telefon(nouvo_kliyan->telefon);
                 snprintf(buffer, 1024, "\tAncien Telephone : %s", kliyan->telefon);
                 afiche_alet(buffer, DANJE);
                 snprintf(buffer, 1024, "\tNouveau Telephone : %s", nouvo_kliyan->telefon);
@@ -195,7 +195,7 @@ int modifye_kliyan() {
         char chwa = getch();
         if (chwa == 'O' || chwa == 'o') {
             Adres * temp = kliyan->adres; // Si moun nan te modifye chan adres la, pou nou ka efase ansyen nou
-            switch (chwa_chan_modifikasyon) {
+            switch (chwa_chan) {
                 case 1: // anrejistre chan non
                     strncpy(kliyan->non, nouvo_kliyan->non, 50);
                     break;
@@ -215,7 +215,7 @@ int modifye_kliyan() {
             textcolor(WHITE);
 
         }
-        if (chwa_chan_modifikasyon != 3) {
+        if (chwa_chan != 3) {
             // Apa adres la yo modifye
             free(nouvo_kliyan->adres);
         }
@@ -224,13 +224,6 @@ int modifye_kliyan() {
         getch();
     }
     return MM_MENI_KLIYAN;
-}
-
-void antre_non(Kliyan *kliyan, char *buffer) {
-    printf("\n\tEntrez le nom du client : ");
-    gets(buffer);
-    strncpy(kliyan->non, buffer, 49);
-    kliyan->non[49] = 0;
 }
 
 void antre_tip(Kliyan *kliyan, char *buffer) {
@@ -248,64 +241,12 @@ void antre_tip(Kliyan *kliyan, char *buffer) {
 }
 
 void fomile_kliyan(Kliyan *kliyan) {
-    char buffer[1024]; // lapp kenbe antre itilizate a, nou sipoze ke li pap antre plis ke 1024 karakte
-    antre_non(kliyan, buffer);
-
-    antre_tip(kliyan, buffer);
-
-    antre_adres(kliyan, buffer);
-
-    antre_telefon(kliyan, buffer);
-}
-
-void antre_telefon(Kliyan *kliyan, char *buffer) {
-    int correct;
-    do {
-        correct = 1;//nou asime ke itilizate ap byen antre enformasyon
-        printf("\tEntrez le numero de telephone (12345678): ");
-        gets(buffer);
-        buffer[8] = 0; //limit 8 character
-        for (int i = 0; i < 8; i++) {
-            if (!isdigit(buffer[i])) correct = 0; // nou gen youn ki pa chif nan pami an
-        }
-    } while (!correct);
-    strncpy(kliyan->telefon, buffer, 8);
-    kliyan->telefon[8] = 0; //kloz chen nan
-}
-
-void antre_adres(Kliyan *kliyan, char *buffer) {
-    printf("\tEntrez l'adresse du client\n");
-    do {
-        printf("\t\tEntrez le numero : ");
-        gets(buffer);
-        kliyan->adres->no = atoi(buffer);
-    } while (kliyan->adres->no <= 0); //fok li se yon chif antye pozitif
-
-    printf("\t\tEntrez le nom de la rue : ");
-    gets(buffer);
-    strncpy(kliyan->adres->ri, buffer, 49);
-    kliyan->adres->ri[49] = 0;
-
-    printf("\t\tEntrez le nom de la ville : ");
-    gets(buffer);
-    strncpy(kliyan->adres->vil, buffer, 24);
-    kliyan->adres->vil[24] = 0;
-
-    int depatman = 0;
-    printf("\t\tEntrez le departement\n");
-    for (int i = 0; i < 10; i++) {
-        printf("\t\t%d) %s\n", i + 1, jwenn_non_depatman(i));
-    }
-    do {
-        printf("\t\tChoisissez un numero : ");
-        gets(buffer);
-        depatman = atoi(buffer);
-    } while (depatman <= 0 || depatman > 10);
-    kliyan->adres->depatman = depatman - 1; //
 }
 
 
-void kreye_paj_kliyan(Page *page) {
+
+
+void kreye_paj_kliyan(Paj *page) {
     page->id = MM_MENI_KLIYAN;
     page->afiche = afiche_meni_kliyan;
 }
