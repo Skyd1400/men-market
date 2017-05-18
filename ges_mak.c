@@ -23,7 +23,7 @@ int main(){
     int fini = 0; // drapo pou jere soti nan pwogram nan
     inittextinfo();
     //mete informasyon fichye yo nan memwa
-    charger_donnees();
+    chaje_done();
     //kreye paj yo
     creer_page_accueil(&paj[0]);
     kreye_paj_sikisal(&paj[5]);

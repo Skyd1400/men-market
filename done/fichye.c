@@ -133,6 +133,52 @@ void trete_chan_pwodwi_sikisal(void *vale_chan, DoneAnaliz *done_tretman) {
     }
 }
 
+void trete_chan_vant(void *vale_chan, DoneAnaliz *data) {
+    Vant *vant = data->temp;
+    switch (data->c_champ) {
+        case 0:
+            vant->id = atoi(vale_chan);
+            break;
+        case 1:
+            vant->kliyan = atoi(vale_chan);
+            break;
+        case 2:
+            vant->sikisal = atoi(vale_chan);
+            break;
+        case 3:
+            sscanf(vale_chan, "%d/%d/%d %d:%d:%d",
+                   &vant->dat->jou,
+                   &vant->dat->mwa,
+                   &vant->dat->ane,
+                   &vant->dat->le,
+                   &vant->dat->minit,
+                   &vant->dat->segond);
+            break;
+    }
+
+}
+
+void trete_chan_detay_vant(void *vale_chan, DoneAnaliz *data) {
+    DetayVant *detayVant = data->temp;
+    switch (data->c_champ) {
+        case 0:
+            detayVant->id = atoi(vale_chan);
+            break;
+        case 1:
+            detayVant->vant = atoi(vale_chan);
+            break;
+        case 2:
+            detayVant->pwodwi = atoi(vale_chan);
+            break;
+        case 3:
+            detayVant->kantite_atik = atoi(vale_chan);
+            break;
+        case 4:
+            detayVant->pri_inite = atoi(vale_chan);
+            break;
+    }
+}
+
 void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
     DoneAnaliz *p_data = ((DoneAnaliz *) done_analiz); // yon ti konvesyon
     if (p_data->c_ligne > 0 &&
@@ -147,6 +193,15 @@ void tretman_chan(void *vale_chan, size_t tay_chan, void *done_analiz) {
             case MM_LIS_PWODWI:
                 trete_chan_pwodwi(vale_chan, p_data);
                 break;
+            case MM_LIS_PWODWI_SIKISAL:
+                trete_chan_pwodwi_sikisal(vale_chan, p_data);
+                break;
+            case MM_LIS_VANT:
+                trete_chan_vant(vale_chan, p_data);
+                break;
+            case MM_LIS_DETAY_VANT:
+                trete_chan_detay_vant(vale_chan, p_data);
+                break;
         }
     }
     p_data->c_champ++; // lot kolon apre a
@@ -158,29 +213,37 @@ void tretman_liyn(int c, void *data) {
     p_data->c_ligne++;
     if (p_data->c_ligne > 0) // nou sote premye lin nan
     {
-        Lis *liste; // li pral stoke adres lis nap trete
+        Lis *lis; // li pral stoke adres lis nap trete
         int t; //lap stoke tay yon eleman nan lis la
         switch (p_data->data_type) { // mete vale pou de varyab yo swivan lis nou deside trete a
             case MM_LIS_KLIYAN:
-                liste = jwenn_lis(MM_LIS_KLIYAN);
+                lis = jwenn_lis(MM_LIS_KLIYAN);
                 t = sizeof(Kliyan);
                 break;
             case MM_LIS_SIKISAL:
-                liste = jwenn_lis(MM_LIS_SIKISAL);
+                lis = jwenn_lis(MM_LIS_SIKISAL);
                 t = sizeof(Sikisal);
                 break;
             case MM_LIS_PWODWI:
-                liste = jwenn_lis(MM_LIS_PWODWI);
+                lis = jwenn_lis(MM_LIS_PWODWI);
                 t = sizeof(Pwodwi);
                 break;
             case MM_LIS_PWODWI_SIKISAL:
-                liste = jwenn_lis(MM_LIS_PWODWI_SIKISAL);
+                lis = jwenn_lis(MM_LIS_PWODWI_SIKISAL);
                 t = sizeof(PwodwiSikisal);
+                break;
+            case MM_LIS_VANT:
+                lis = jwenn_lis(MM_LIS_VANT);
+                t = sizeof(Vant);
+                break;
+            case MM_LIS_DETAY_VANT:
+                lis = jwenn_lis(MM_LIS_DETAY_VANT);
+                t = sizeof(DetayVant);
                 break;
         }
         if (p_data->temp != NULL) {
             // nou te gentan gen yon eleman nou tap trete deja
-            mete_nan_lis(liste, p_data->temp); // nou jis ajoute li nan lis la kom yon lot eleman
+            mete_nan_lis(lis, p_data->temp); // nou jis ajoute li nan lis la kom yon lot eleman
         }
         // nou kreye yon nouvo eleman pou nouvo liyn
         void *temp = malloc(t);
@@ -193,6 +256,10 @@ void tretman_liyn(int c, void *data) {
             } else {
                 ((Sikisal *) temp)->adres = temp_address;
             }
+        } else if (p_data->data_type == MM_LIS_VANT) {
+            // N'ap ajoute kote pou resevwa dat la si se nan lis vant lan nou ye
+            Dat *dat = malloc(sizeof(Dat));
+            ((Vant *) temp)->dat = dat;
         }
         // nou nan fen lin ke nou tap trete a, e nou pral koumanse yon lot, donk nou prepare andwa pou
         // stoke done yo e nou remete nimewo chan nou ye a a zewo
@@ -201,9 +268,9 @@ void tretman_liyn(int c, void *data) {
     }
 }
 
-char *jwen_non_fichye(int type_donnees) {
+char *jwen_non_fichye(int tip_done) {
     char *fichier;
-    switch (type_donnees) {
+    switch (tip_done) {
         // n'ap ba varyab la vale swivan ki lis nou deside ouve
         case MM_LIS_KLIYAN:
             fichier = FICHYE_KLIYAN;
@@ -229,9 +296,9 @@ char *jwen_non_fichye(int type_donnees) {
     return fichier;
 }
 
-int charger_fichier(int type_donnees) {
+int li_fichye(int tip_done) {
     char *fichier; // sa pral stoke non fichye a
-    fichier = jwen_non_fichye(type_donnees);
+    fichier = jwen_non_fichye(tip_done);
     if (fichier == NULL)
         return 1;
     FILE *fp = fopen(fichier, "r");
@@ -244,7 +311,7 @@ int charger_fichier(int type_donnees) {
     struct csv_parser p;
     size_t r; // konbyen oktet ki li
     char buf[1024]; // lap stoke blok nap trete a
-    DoneAnaliz data = {type_donnees, NULL, 0, 0}; // nou inisyalize done nou yo
+    DoneAnaliz data = {tip_done, NULL, 0, 0}; // nou inisyalize done nou yo
     csv_init(&p, CSV_APPEND_NULL); // nou inisyalize bibliyotek nou an ak opsyon pou li temine chen yo pa zewo
     while ((r = fread(buf, 1, 1024, fp)) > 0) { // li yon moso nan fichye toutotan li pa rive nan fen
         if (csv_parse(&p, buf, r, tretman_chan, tretman_liyn, &data) != r) //trete moso ou li a e verifye ke pa gen ere
@@ -364,7 +431,7 @@ char *liyn_detay_vant(void *done) {
     return buffer;
 };
 
-int ecrire_fichier(int type_donnees) {
+int ekri_fichye(int type_donnees) {
     char *fichier = jwen_non_fichye(type_donnees); // sa pral stoke non fichye a
     char *(*antet)(); //fonksyon kap jenere antet fichye a
     char *(*liyn)(void *); //fonksyon kap jenere teks pou chak liyn
@@ -414,19 +481,19 @@ int ecrire_fichier(int type_donnees) {
     return 1;
 }
 
-void charger_donnees() {
+void chaje_done() {
     inisyalize_lis(jwenn_lis(MM_LIS_KLIYAN)); // nou kreye lis la
     inisyalize_lis(jwenn_lis(MM_LIS_SIKISAL)); // nou kreye lis la
     inisyalize_lis(jwenn_lis(MM_LIS_PWODWI)); // nou kreye lis la
     inisyalize_lis(jwenn_lis(MM_LIS_PWODWI_SIKISAL)); // nou kreye lis la
     inisyalize_lis(jwenn_lis(MM_LIS_VANT)); // nou kreye lis la
     inisyalize_lis(jwenn_lis(MM_LIS_DETAY_VANT)); // nou kreye lis la
-    charger_fichier(MM_LIS_KLIYAN); // nou ajoute done ki nan fichye an nan lis lan
-    charger_fichier(MM_LIS_SIKISAL); // nou ajoute done ki nan fichye an nan lis lan
-    charger_fichier(MM_LIS_PWODWI); // nou ajoute done ki nan fichye an nan lis lan
-    charger_fichier(MM_LIS_PWODWI_SIKISAL); // nou ajoute done ki nan fichye an nan lis lan
-    charger_fichier(MM_LIS_VANT); // nou ajoute done ki nan fichye an nan lis lan
-    charger_fichier(MM_LIS_DETAY_VANT); // nou ajoute done ki nan fichye an nan lis lan
+    li_fichye(MM_LIS_KLIYAN); // nou ajoute done ki nan fichye an nan lis lan
+    li_fichye(MM_LIS_SIKISAL); // nou ajoute done ki nan fichye an nan lis lan
+    li_fichye(MM_LIS_PWODWI); // nou ajoute done ki nan fichye an nan lis lan
+    li_fichye(MM_LIS_PWODWI_SIKISAL); // nou ajoute done ki nan fichye an nan lis lan
+    li_fichye(MM_LIS_VANT); // nou ajoute done ki nan fichye an nan lis lan
+    li_fichye(MM_LIS_DETAY_VANT); // nou ajoute done ki nan fichye an nan lis lan
 }
 
 int afiche_ekran_sovgade(int *type, int nonb, TypePage paj_retou) {
@@ -435,7 +502,7 @@ int afiche_ekran_sovgade(int *type, int nonb, TypePage paj_retou) {
     textcolor(WHITE);
     afiche_alet("\n\tSauvegarde du(es) fichier(s)...", AVETISMAN);
     for (int i = 0; i < nonb; i++) {
-        ecrire_fichier(type[i]);
+        ekri_fichye(type[i]);
     }
     afiche_alet("\n\tFichier(s) sauvegarde(s)", SIKSE);
     textcolor(WHITE);
