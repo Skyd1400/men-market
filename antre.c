@@ -75,7 +75,7 @@ int antre_chwa(const char *mesaj, char **opsyon, int limit) {
         printf("\tChoisissez un numero : ");
         gets(buffer);
         chwa = atoi(buffer);
-    } while (chwa <= 0 || chwa > 2);
+    } while (chwa <= 0 || chwa > limit);
     return chwa - 1;
 }
 

@@ -7,6 +7,9 @@
 
 #include "Maket.h"
 
+/*
+ * Fonksyon sa antre2
+ */
 int antre_teks(const char *mesaj, char *chen, size_t limit);
 int antre_adres(Adres * adres);
 int antre_nimewo_telefon(char * chen);

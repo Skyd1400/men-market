@@ -152,21 +152,21 @@ int modifye_kliyan() {
         char * chwa_tip[2] = {"Particulier", "Entreprise"}; // nou pa ka mete li andedan switch la
         //
         switch (chwa_chan) {
-            case 1: // chan non
+            case 0: // chan non
                 antre_teks("\n\tEntrez le nom du client :", nouvo_kliyan->non, 50);
                 snprintf(buffer, 1024, "\tAncien Nom : %s", kliyan->non);
                 afiche_alet(buffer, DANJE);
                 snprintf(buffer, 1024, "\tNouveau Nom : %s", nouvo_kliyan->non);
                 afiche_alet(buffer, SIKSE);
                 break;
-            case 2: // chan tip
+            case 1: // chan tip
                 nouvo_kliyan->tip = antre_chwa("\tEntrez le type de client\n", chwa_tip, 2);
                 snprintf(buffer, 1024, "\tAncien Type : %s", kliyan->tip == ENTREPRISE? "Entreprise": "Particulier");
                 afiche_alet(buffer, DANJE);
                 snprintf(buffer, 1024, "\tNouveau Nom : %s", kliyan->tip == ENTREPRISE? "Entreprise": "Particulier");
                 afiche_alet(buffer, SIKSE);
                 break;
-            case 3: // chan adres
+            case 2: // chan adres
                 antre_adres(nouvo_kliyan->adres);
                 snprintf(buffer, 1024,
                          "\tAncien Adresse : \n\t\tNumero : %d\n\t\tRue : %s\n\t\tVille : %s\n\t\tDepartement : %s",
@@ -183,7 +183,7 @@ int modifye_kliyan() {
                          jwenn_non_depatman(nouvo_kliyan->adres->depatman));
                 afiche_alet(buffer, SIKSE);
                 break;
-            case 4: // chan non
+            case 3: // chan non
                 antre_nimewo_telefon(nouvo_kliyan->telefon);
                 snprintf(buffer, 1024, "\tAncien Telephone : %s", kliyan->telefon);
                 afiche_alet(buffer, DANJE);
@@ -216,7 +216,7 @@ int modifye_kliyan() {
             textcolor(WHITE);
 
         }
-        if (chwa_chan != 3) {
+        if (chwa_chan != 2) {
             // Apa adres la yo modifye
             free(nouvo_kliyan->adres);
         }

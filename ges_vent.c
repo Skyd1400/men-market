@@ -20,39 +20,28 @@ int ajoute_vant() {
 
     char buffer[1024];
 
-    int konfimasyon_nouvo = 0;
-    printf("\n\tEst-ce que c'est un nouveau client? \n");
-    printf("\t1) Oui\n");
-    printf("\t2) Non\n");
-    do {
-        printf("\tChoisissez un numero : ");
-        gets(buffer);
-        konfimasyon_nouvo = atoi(buffer);
-    } while (konfimasyon_nouvo <= 0 || konfimasyon_nouvo > 2);
 
-    if (konfimasyon_nouvo == 1) {
-        afiche_alet("\n\tAjouter le client via la page ", AVETISMAN);
+    char *opsyon_nouvo[2] = {"Oui", "Non"};
+    int konfimasyon_nouvo = antre_chwa("\n\tEst-ce que c'est un nouveau client?\n", opsyon_nouvo, 2);
+
+    if (konfimasyon_nouvo == 0) {
+        afiche_alet("\n\tAjouter le client via la page \"Ajouter un client\"", AVETISMAN);
         textcolor(WHITE);
-        printf("\n\tAppuyer sur une touche  pour aller au module Client...");
+        printf("\n\tAppuyer sur une touche  pour aller au module client...");
         getch();
         return MM_MENI_KLIYAN;
     }
-    int id_kliyan = 0;
-    printf("\n");
-    do {
-        printf("\tEntrez l'identifiant du client: ");
-        gets(buffer);
-        id_kliyan = atoi(buffer);
-        if (id_kliyan <= 0) {
-            textcolor(RED);
-            printf("\tL'identifiant est incorrect\n");
-            textcolor(WHITE);
-        }
-    } while (id_kliyan <= 0);
-    // Chache id a nan memwa a
-    Lis *lis = jwenn_lis(MM_LIS_KLIYAN);
-    Mayon *mayon = jwenn_nan_lis(lis, id_kliyan, 0);
-    if (mayon == NULL) {
+    int id_kliyan = antre_chif("n\tEntrez l'identifiant du client : ");
+    if (id_kliyan < 1) {
+        afiche_alet("\tL'identifiant est incorrect\n", DANJE);
+        textcolor(WHITE);
+        printf("\n\tAppuyer sur une touche  pour retourner au menu...");
+        getch();
+        return MM_MENI_VANT;
+    }
+    Kliyan *kliyan = jwenn_nan_lis(jwenn_lis(MM_LIS_KLIYAN), id_kliyan, 1);
+
+    if (kliyan == NULL) {
         afiche_alet("\tLe client n'existe pas", DANJE);
         afiche_alet("\n\tAjouter le client via la page ", AVETISMAN);
         textcolor(WHITE);
@@ -60,23 +49,17 @@ int ajoute_vant() {
         getch();
         return MM_MENI_KLIYAN;
     }
-    Kliyan *kliyan = mayon->done;
 
-    int id_sikisal = 0;
-    do {
-        printf("\tEntrez l'identifiant de la succursale: ");
-        gets(buffer);
-        id_sikisal = atoi(buffer);
-        if (id_sikisal <= 0) {
-            textcolor(RED);
-            printf("\tL'identifiant est incorrect\n");
-            textcolor(WHITE);
-        }
-    } while (id_kliyan <= 0);
-    // Chache id a nan memwa a
-    Lis *lis_sikisal = jwenn_lis(MM_LIS_SIKISAL);
-    Mayon *mayon_sikisal = jwenn_nan_lis(lis_sikisal, id_sikisal, 0);
-    if (mayon_sikisal == NULL) {
+    int id_sikisal = antre_chif("\tEntrez l'identifiant de la succursale : ");
+    if (id_sikisal < 1) {
+        afiche_alet("\tL'identifiant est incorrect\n", DANJE);
+        textcolor(WHITE);
+        printf("\n\tAppuyer sur une touche  pour retourner au menu...");
+        getch();
+        return MM_MENI_VANT;
+    }
+    Sikisal *sikisal = jwenn_nan_lis(jwenn_lis(MM_LIS_SIKISAL), id_sikisal, 1);
+    if (sikisal == NULL) {
         afiche_alet("\tCette succursale n'existe pas", DANJE);
         textcolor(WHITE);
         printf("\n\tAppuyer sur une touche  pour retourner au menu...");
@@ -84,20 +67,22 @@ int ajoute_vant() {
         return MM_MENI_VANT;
     }
 
-    Sikisal * sikisal = mayon_sikisal->done;
-
-
     time_t moman_kouran = time(NULL);
-    struct tm * dat_lokal = localtime(&moman_kouran);
+    struct tm *dat_lokal = localtime(&moman_kouran);
 
-    Dat * dat = malloc(sizeof(Dat));
+    Dat *dat = malloc(sizeof(Dat));
     konveti_dat(dat_lokal, dat);
 
-    Vant * vant = malloc(sizeof(Vant));
+    Vant *vant = malloc(sizeof(Vant));
 
     vant->kliyan = id_kliyan;
     vant->sikisal = id_sikisal;
     vant->dat = dat;
+
+    //Pran lis kliyan an
+    Lis *lis_vant = jwenn_lis(MM_LIS_VANT);
+    // mete id ke kliyan sa ka genyen
+    vant->id = lis_vant->id_swivan;
 
     printf("\n");
     printf("\n\tVente:");
@@ -110,14 +95,29 @@ int ajoute_vant() {
            vant->dat->le,
            vant->dat->minit, vant->dat->segond);
 
+    char continuer;
+    do {
+        int kod_pwodwi = antre_chif("\n\tEntrer le code du produit : ");
+        if (kod_pwodwi < 1) {
+            afiche_alet("\tL'identifiant est incorrect\n", DANJE);
+            textcolor(WHITE);
+        } else if (jwenn_nan_lis(jwenn_lis(MM_LIS_PWODWI), kod_pwodwi, 1) == NULL) {
+            afiche_alet("\tCe produit n'existe pas dans le magasin\n", DANJE);
+            textcolor(WHITE);
+        } else {
+            int kantite = 0;
+            do {
+                kantite = antre_chif("\tEntrez la quantite achetee : ");
+            } while (kantite < 1);
+        }
+        printf("\n\tContinuer l'ajout [(O)ui|(N)on] : ");
+        continuer = getch();
+    }while (continuer == 'O' || continuer == 'o');
+
     printf("\n\tEnregistrer les changements [(O)ui\\(N)on]: ");
     char chwa = getch();
     if (chwa == 'O' || chwa == 'o') {
         //Kliyan an deside sovgade done li
-        //Pran lis kliyan an
-        Lis *lis_vant = jwenn_lis(MM_LIS_VANT);
-        // mete id ke kliyan sa ka genyen
-        vant->id = lis_vant->id_swivan;
         mete_nan_lis(lis_vant, vant);// Ajoute li nan lis la
         lis_vant->chanje = 1; // gen nouvo enfomasyon ki pa nan fichye
         afiche_alet("\n\tles informations ont ete enregistrees", SIKSE);
@@ -127,14 +127,10 @@ int ajoute_vant() {
         free(vant->dat);
         free(vant);
         textcolor(WHITE);
-        printf("\n\tAppuyer sur une touche  pour retourner au menu...");
-        getch();
-        return MM_MENI_VANT;
     }
-
+    printf("\n\tAppuyer sur une touche  pour retourner au menu...");
     getch();
-    // detay vant
-    return  MM_MENI_VANT;
+    return MM_MENI_VANT;
 }
 
 int retou_atik() {
@@ -147,7 +143,7 @@ int retou_atik() {
         afiche_alet("\tL'id est invalide", DANJE);
         textcolor(WHITE);
     } else {
-        Vant * vant = jwenn_nan_lis(jwenn_lis(MM_LIS_VANT), id, 1);
+        Vant *vant = jwenn_nan_lis(jwenn_lis(MM_LIS_VANT), id, 1);
         if (vant == NULL) {
             afiche_alet("\tCette vente n'a pas eu lieu", DANJE);
             textcolor(WHITE);
@@ -158,11 +154,11 @@ int retou_atik() {
                 afiche_alet("\tL'id est invalide", DANJE);
                 textcolor(WHITE);
             } else {
-                DetayVant * detay_vant = NULL;
-                Mayon * mayon_detay_vant = jwenn_lis(MM_LIS_DETAY_VANT)->premye;
+                DetayVant *detay_vant = NULL;
+                Mayon *mayon_detay_vant = jwenn_lis(MM_LIS_DETAY_VANT)->premye;
                 while (mayon_detay_vant != NULL) {
 
-                    if (((DetayVant *)mayon_detay_vant->done)->pwodwi == id) {
+                    if (((DetayVant *) mayon_detay_vant->done)->pwodwi == id) {
                         detay_vant = mayon_detay_vant->done;
                         break;
                     }
@@ -196,14 +192,14 @@ int retou_atik() {
     return MM_MENI_VANT;
 }
 
-int afiche_meni_vant(){
+int afiche_meni_vant() {
     ScreenClear();
     afficher_en_tete("Module Ventes");
     Meni meni_vant[4] = {
             {"Ajouter une vente.",          MM_AJOU_VANT},
             {"Retourner un article vendu.", MM_RETOU_ATIK},
-            {"Enregistrer les fichiers.", MM_SOVGAD},
-            {"Retour", MM_AKEY}
+            {"Enregistrer les fichiers.",   MM_SOVGAD},
+            {"Retour",                      MM_AKEY}
     };
     int ret = afficher_menu(meni_vant, 4);
     int fichye[2] = {MM_LIS_VANT, MM_LIS_DETAY_VANT};
@@ -220,7 +216,6 @@ int afiche_meni_vant(){
     }
     return ret;
 }
-
 
 
 void kreye_paj_vant(Paj *page) {

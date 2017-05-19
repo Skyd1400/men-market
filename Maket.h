@@ -40,7 +40,7 @@ typedef struct {
     int id;
     char deskripsyon[100];
     Adres* adres;
-    char responsab[49];
+    char responsab[50];
     char telefon[9];
 } Sikisal;
 
