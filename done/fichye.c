@@ -368,7 +368,7 @@ char *antet_pwodwi() {
 char *liyn_pwodwi(void *done) {
     Pwodwi *pwodwi = done;
     char *buffer = malloc(1024);
-    snprintf(buffer, 1024, "\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"",
+    snprintf(buffer, 1024, "\n\"%d\",\"%s\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"",
              pwodwi->kod,
              pwodwi->deskripsyon,
              pwodwi->kantite,
@@ -386,7 +386,7 @@ char *antet_pwodwi_sikisal() {
 char *liyn_pwodwi_sikisal(void *done) {
     PwodwiSikisal *pwodwiSikisal = done;
     char *buffer = malloc(1024);
-    snprintf(buffer, 1024, "\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"",
+    snprintf(buffer, 1024, "\n\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"",
              pwodwiSikisal->pwodwi,
              pwodwiSikisal->sikisal,
              pwodwiSikisal->kantite_min,
@@ -402,7 +402,7 @@ char *antet_vant() {
 char *liyn_vant(void *done) {
     Vant *vant = done;
     char *buffer = malloc(1024);
-    snprintf(buffer, 1024, "\"%d\",\"%d\",\"%d\",\"%d/%d/%d %d:%d:%d\"",
+    snprintf(buffer, 1024, "\n\"%d\",\"%d\",\"%d\",\"%d/%d/%d %d:%d:%d\"",
              vant->id,
              vant->kliyan,
              vant->sikisal,
@@ -422,7 +422,7 @@ char *antet_detay_vant() {
 char *liyn_detay_vant(void *done) {
     DetayVant *detay_vant = done;
     char *buffer = malloc(1024);
-    snprintf(buffer, 1024, "\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"",
+    snprintf(buffer, 1024, "\n\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"",
              detay_vant->id,
              detay_vant->vant,
              detay_vant->pwodwi,

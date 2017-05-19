@@ -65,9 +65,9 @@ int antre_nimewo_telefon(char *chen) {
     chen[8] = 0; //kloz chen nan
 }
 
-int antre_chwa(const char *prompt, char **opsyon, int limit) {
+int antre_chwa(const char *mesaj, char **opsyon, int limit) {
     int chwa = 0;
-    printf(prompt);
+    printf(mesaj);
     for (int i = 0; i < limit; i++) {
         printf("\t%d) %s\n", i + 1, opsyon[i]);
     }
@@ -77,4 +77,15 @@ int antre_chwa(const char *prompt, char **opsyon, int limit) {
         chwa = atoi(buffer);
     } while (chwa <= 0 || chwa > 2);
     return chwa - 1;
+}
+
+int antre_chif(const char *mesaj) {
+    int ret;
+    int valid = 0;
+    do {
+        printf(mesaj);
+        gets(buffer);
+        valid = sscanf(buffer, "%d", &ret);
+    } while (valid != 1);
+    return ret;
 }

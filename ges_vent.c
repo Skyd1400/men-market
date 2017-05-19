@@ -9,12 +9,9 @@
 #include "menu.h"
 #include "done/strikti.h"
 #include "util.h"
+#include "antre.h"
+#include "done/fichye.h"
 
-Meni meni_vant[3] = {
-        {"Ajouter une vente.",          MM_AJOU_VANT},
-        {"Retourner un article vendu.", MM_RETOU_ATIK},
-        {"Retour", MM_AKEY}
-};
 
 int ajoute_vant() {
     ScreenClear();
@@ -141,19 +138,84 @@ int ajoute_vant() {
 }
 
 int retou_atik() {
+    ScreenClear();
+    afficher_en_tete("Retourner un article");
+    textcolor(WHITE);
+
+    int id = antre_chif("\n\tEntrer l'identifiant de la vente : ");
+    if (id < 1) {
+        afiche_alet("\tL'id est invalide", DANJE);
+        textcolor(WHITE);
+    } else {
+        Vant * vant = jwenn_nan_lis(jwenn_lis(MM_LIS_VANT), id, 1);
+        if (vant == NULL) {
+            afiche_alet("\tCette vente n'a pas eu lieu", DANJE);
+            textcolor(WHITE);
+        } else {
+            // Moun nan pa bay fake resi
+            id = antre_chif("\tEntrer le code du produit : ");
+            if (id < 1) {
+                afiche_alet("\tL'id est invalide", DANJE);
+                textcolor(WHITE);
+            } else {
+                DetayVant * detay_vant = NULL;
+                Mayon * mayon_detay_vant = jwenn_lis(MM_LIS_DETAY_VANT)->premye;
+                while (mayon_detay_vant != NULL) {
+
+                    if (((DetayVant *)mayon_detay_vant->done)->pwodwi == id) {
+                        detay_vant = mayon_detay_vant->done;
+                        break;
+                    }
+
+                    mayon_detay_vant = mayon_detay_vant->apre;
+                }
+
+                if (detay_vant == NULL) {
+                    afiche_alet("\tCette vente ne comptait pas ce produit", DANJE);
+                    textcolor(WHITE);
+                } else {
+                    int kantite_retounen = antre_chif("\tEntrez la quantite retournee : ");
+                    if (kantite_retounen > detay_vant->kantite_atik) {
+                        afiche_alet("\tLa quantite d'articles est superieure a celle vendue", DANJE);
+                        textcolor(WHITE);
+                    } else {
+                        printf("\n\tConfirmer le retour de %d articles [(O)ui|(N)on]: ", kantite_retounen);
+                        char chwa = getch();
+                        if (chwa == 'O' || chwa == 'o') {
+                            detay_vant->kantite_atik -= kantite_retounen;
+                            afiche_alet("\n\tChangement enregistre", SIKSE);
+                            textcolor(WHITE);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    printf("\n\tAppuyer sur une touche  pour retourner au menu...");
+    getch();
     return MM_MENI_VANT;
 }
 
 int afiche_meni_vant(){
     ScreenClear();
     afficher_en_tete("Module Ventes");
-    int ret = afficher_menu(meni_vant, 3);
+    Meni meni_vant[4] = {
+            {"Ajouter une vente.",          MM_AJOU_VANT},
+            {"Retourner un article vendu.", MM_RETOU_ATIK},
+            {"Enregistrer les fichiers.", MM_SOVGAD},
+            {"Retour", MM_AKEY}
+    };
+    int ret = afficher_menu(meni_vant, 4);
+    int fichye[2] = {MM_LIS_VANT, MM_LIS_DETAY_VANT};
     switch (ret) {
         case MM_AJOU_VANT:
             ret = ajoute_vant();
             break;
         case MM_RETOU_ATIK:
             ret = retou_atik();
+            break;
+        case MM_SOVGAD:
+            ret = afiche_ekran_sovgade(fichye, 2, MM_MENI_VANT);
             break;
     }
     return ret;
