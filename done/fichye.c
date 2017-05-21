@@ -98,7 +98,7 @@ void trete_chan_pwodwi(void *vale_chan, DoneAnaliz *done_tretman) {
             pwodwi->kantite = atoi(vale_chan);
             break;
         case 3:
-            pwodwi->pri_revant_init = atoi(vale_chan);
+            pwodwi->pri_revyen_init = atoi(vale_chan);
             break;
         case 4:
             pwodwi->pri_vant_inite = atoi(vale_chan);
@@ -372,7 +372,7 @@ char *liyn_pwodwi(void *done) {
              pwodwi->kod,
              pwodwi->deskripsyon,
              pwodwi->kantite,
-             pwodwi->pri_revant_init,
+             pwodwi->pri_revyen_init,
              pwodwi->pri_vant_inite,
              pwodwi->stok_sekirite,
              pwodwi->stati);

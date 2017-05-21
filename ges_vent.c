@@ -80,10 +80,11 @@ int ajoute_vant() {
     vant->dat = dat;
 
     //Pran lis kliyan an
-    Lis *lis_vant = jwenn_lis(MM_LIS_VANT);
+    Lis *lis_vant = jwenn_lis(MM_LIS_VANT); // pa bliye li
     // mete id ke kliyan sa ka genyen
     vant->id = lis_vant->id_swivan;
 
+    //afiche detay vant la pou itilizate a we
     printf("\n");
     printf("\n\tVente:");
     printf("\n\tNom du client -> %s", kliyan->non);
@@ -96,19 +97,44 @@ int ajoute_vant() {
            vant->dat->minit, vant->dat->segond);
 
     char continuer;
-    do {
+    Lis * lis_detay = jwenn_lis(MM_LIS_DETAY_VANT); // pou nou ka pran pwochen id a ladan li
+    Lis lis = {0, 0, lis_detay->id_swivan, NULL, NULL, MM_LIS_DETAY_VANT}; // sa se yon lis tampore
+    do { // Fo li achte kan menm
+        Pwodwi * pwodwi = NULL;
         int kod_pwodwi = antre_chif("\n\tEntrer le code du produit : ");
         if (kod_pwodwi < 1) {
             afiche_alet("\tL'identifiant est incorrect\n", DANJE);
             textcolor(WHITE);
-        } else if (jwenn_nan_lis(jwenn_lis(MM_LIS_PWODWI), kod_pwodwi, 1) == NULL) {
+        }
+        pwodwi = jwenn_nan_lis(jwenn_lis(MM_LIS_PWODWI), kod_pwodwi, 1); // Pou nou ka pran pri vant
+        PwodwiSikisal * pwodwi_sikisal = NULL;
+        Mayon * mayon_pwodwi_sikisal = jwenn_lis(MM_LIS_PWODWI_SIKISAL)->premye;
+        while (mayon_pwodwi_sikisal != NULL) {
+            PwodwiSikisal * ps = (PwodwiSikisal *) mayon_pwodwi_sikisal->done;
+            if (ps->pwodwi == kod_pwodwi && ps->sikisal == id_sikisal) {
+                pwodwi_sikisal = ps;
+                break;
+            }
+            mayon_pwodwi_sikisal = mayon_pwodwi_sikisal->apre;
+        }
+        if (pwodwi == NULL && pwodwi_sikisal == NULL) {
+            // Verifye ke se pa yon lot kote li soti ak li
             afiche_alet("\tCe produit n'existe pas dans le magasin\n", DANJE);
             textcolor(WHITE);
         } else {
             int kantite = 0;
             do {
                 kantite = antre_chif("\tEntrez la quantite achetee : ");
-            } while (kantite < 1);
+            } while (kantite < 1 && kantite > pwodwi_sikisal->kantite_dispo); // Yon moun pa ka achte -1 pwodwi oswa anyen
+
+            DetayVant * detay_vant = malloc(sizeof(DetayVant));
+            detay_vant->pwodwi = kod_pwodwi;
+            detay_vant->kantite_atik = kantite;
+            detay_vant->pri_inite = pwodwi->pri_vant_inite;
+            detay_vant->vant = vant->id; // raple ke mwenn te setup sa anle a
+            detay_vant->id = lis.id_swivan; // nou te inisyalize vale sa anle a tou
+            // Nap anrejistre li nan lis tanpore a
+            mete_nan_lis(&lis, detay_vant);
         }
         printf("\n\tContinuer l'ajout [(O)ui|(N)on] : ");
         continuer = getch();
@@ -117,13 +143,45 @@ int ajoute_vant() {
     printf("\n\tEnregistrer les changements [(O)ui\\(N)on]: ");
     char chwa = getch();
     if (chwa == 'O' || chwa == 'o') {
-        //Kliyan an deside sovgade done li
-        mete_nan_lis(lis_vant, vant);// Ajoute li nan lis la
-        lis_vant->chanje = 1; // gen nouvo enfomasyon ki pa nan fichye
-        afiche_alet("\n\tles informations ont ete enregistrees", SIKSE);
-        printf("\n\tID DE LA VENTE -> %d\n", vant->id);
-        textcolor(WHITE);
+        if (lis.nonb > 0) { // Fok gen yon atiki ki van
+            mete_nan_lis(lis_vant, vant);// anrejistre vant la nan lis la
+            // Yon ti maji nwa
+            if (lis_detay->denye != NULL) lis_detay->denye->apre = lis.premye; // Nou ajoute fen lis la nan lis prensipal la
+            lis.premye->anvan = lis_detay->denye; // nou ajoute lis prensipal la anvan lis nou an
+            lis_detay->denye = lis.denye;
+            if (lis_detay->premye == NULL) lis_detay->premye = lis.premye; // pat gen anyen nan lis la;
+            // Nou mete a jou done sou lis la
+            lis_detay->nonb += lis.nonb;
+            lis_detay->id_swivan = lis.id_swivan;
+            // Retire pwodwi a nan magazen an
+            Mayon * mayon = lis.premye;
+            while (mayon != NULL) {
+                DetayVant * dv = mayon->done;
+
+                PwodwiSikisal * pwodwi_sikisal = NULL;
+                Mayon * mayon_pwodwi_sikisal = jwenn_lis(MM_LIS_PWODWI_SIKISAL)->premye;
+                while (mayon_pwodwi_sikisal != NULL) {
+                    PwodwiSikisal * ps = (PwodwiSikisal *) mayon_pwodwi_sikisal->done;
+                    if (ps->pwodwi == dv->pwodwi && ps->sikisal == id_sikisal) {
+                        ps->kantite_dispo -= dv->kantite_atik;
+                    }
+                    mayon_pwodwi_sikisal = mayon_pwodwi_sikisal->apre;
+                }
+                mayon = mayon->apre;
+            }
+            // Seyans maji nwa a fini
+            afiche_alet("\n\tles informations ont ete enregistrees", SIKSE);
+            printf("\n\tID DE LA VENTE -> %d\n", vant->id);
+            textcolor(WHITE);
+        }
     } else {
+        Mayon * mayon = lis.premye;
+        while (mayon != NULL) {
+            free(mayon->done);
+            Mayon * m = mayon;
+            mayon = mayon->apre;
+            free(m);
+        }
         free(vant->dat);
         free(vant);
         textcolor(WHITE);

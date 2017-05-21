@@ -48,7 +48,7 @@ typedef struct {
     int kod;
     char deskripsyon[101];
     int kantite;
-    int pri_revant_init;
+    int pri_revyen_init;
     int pri_vant_inite;
     int stok_sekirite;
     StatiPwodwi stati;
