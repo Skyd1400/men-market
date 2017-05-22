@@ -7,7 +7,7 @@
 #include <mem.h>
 #include "Maket.h"
 #include "page.h"
-#include "menu.h"
+#include "meni.h"
 #include "done/strikti.h"
 #include "util.h"
 #include "antre.h"
@@ -168,7 +168,7 @@ int afiche_meni_sikisal() {
             {"Sauvegarder le fichier sur le disque", MM_SOVGAD},
             {"Retour",                               MM_AKEY}
     };
-    int ret = afficher_menu(meni_sikisal, 4);
+    int ret = afiche_meni(meni_sikisal, 4);
     int fichye[1] = {MM_LIS_SIKISAL};
     switch (ret) {
         case MM_AJOU_SIKISAL:

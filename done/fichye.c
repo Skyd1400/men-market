@@ -496,7 +496,7 @@ void chaje_done() {
     li_fichye(MM_LIS_DETAY_VANT); // nou ajoute done ki nan fichye an nan lis lan
 }
 
-int afiche_ekran_sovgade(int *type, int nonb, TypePage paj_retou) {
+int afiche_ekran_sovgade(int *type, int nonb, TipPaj paj_retou) {
     ScreenClear();
     afficher_en_tete("Sauvegarde");
     textcolor(WHITE);

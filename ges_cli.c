@@ -8,7 +8,7 @@
 #include <mem.h>
 #include <ctype.h>
 #include "Maket.h"
-#include "menu.h"
+#include "meni.h"
 #include "done/strikti.h"
 #include "util.h"
 #include "antre.h"
@@ -40,7 +40,7 @@ int afiche_meni_kliyan() {
             {"Sauvegarder le fichier sur le disque", MM_SOVGAD},
             {"Retour",                               MM_AKEY}
     };
-    int ret = afficher_menu(meni_kliyan, 4);
+    int ret = afiche_meni(meni_kliyan, 4);
     int fichye[1] = {MM_LIS_KLIYAN};
     switch (ret) {
         case MM_AJOU_KLIYAN:

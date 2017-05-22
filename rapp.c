@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "Maket.h"
 #include "page.h"
-#include "menu.h"
+#include "meni.h"
 #include "done/strikti.h"
 #include "util.h"
 
@@ -14,7 +14,7 @@ Meni meni_rapo[5] = {
         {"Liste des clients", MM_LIS_KLIYAN_PA_DEPATMAN},
         {"Resume des ventes", MM_LIS_VANT_AK_PWODWI},
         {"Liste des produits a commander", MM_LIS_KOMAND},
-        {"Liste des succursales a approvisionner", MM_LIS_SIKISAL_POU_APPWOVIZYONE},
+        {"Liste des succursales a approvisionner", MM_LIS_SIKISAL_POU_APWOVIZYONE},
         {"Retour", MM_AKEY}
 };
 
@@ -208,7 +208,7 @@ int liste_sikisal() {
 int afiche_meni_rapo() {
     ScreenClear();
     afficher_en_tete("Rapports");
-    int ret = afficher_menu(meni_rapo, 5);
+    int ret = afiche_meni(meni_rapo, 5);
     switch (ret){
         case MM_LIS_KLIYAN_PA_DEPATMAN:
             ret = liste_kliyan();
@@ -219,7 +219,7 @@ int afiche_meni_rapo() {
         case MM_LIS_KOMAND:
             ret = liste_komand();
             break;
-        case MM_LIS_SIKISAL_POU_APPWOVIZYONE:
+        case MM_LIS_SIKISAL_POU_APWOVIZYONE:
             ret = liste_sikisal();
     }
     return ret;

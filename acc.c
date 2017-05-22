@@ -7,7 +7,7 @@
 #include "lib/conio2.h"
 #include "Maket.h"
 #include "page.h"
-#include "menu.h"
+#include "meni.h"
 
 
 int afficher_accueil() {
@@ -22,10 +22,10 @@ int afficher_accueil() {
             {"RAPPORTS", MM_MENI_RAPO},
             {"Quitter le programme", MM_SORTIE}
     };
-    return  afficher_menu(meni_akey, 6);
+    return afiche_meni(meni_akey, 6);
 }
 
-void creer_page_accueil(Paj* page){
+void kreye_paj_akey(Paj *page){
     page->id = MM_AKEY;
     page->afiche = afficher_accueil;
 }

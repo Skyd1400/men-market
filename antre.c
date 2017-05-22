@@ -13,7 +13,7 @@
 char buffer[1024];
 
 int antre_adres(Adres *adres) {
-    printf("\tEntrez l'adresse du client\n");
+    printf("\tEntrez l'adresse : \n");
     do {
         printf("\t\tEntrez le numero : ");
         gets(buffer);

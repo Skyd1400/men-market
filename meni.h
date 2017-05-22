@@ -8,11 +8,11 @@
 #include "page.h"
 
 typedef struct {
-    char *nom;
-    int page_suivante;
+    char *non;
+    int paj_swivan;
 } Meni;
 
 
-int afficher_menu(Meni *menu, int choix_possibles);
+int afiche_meni(Meni *meni, int chwa_posib);
 
 #endif //CCINTERFACE_MENU_H

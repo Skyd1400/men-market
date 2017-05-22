@@ -14,6 +14,6 @@
 void chaje_done();
 
 int ekri_fichye(int type);
-int afiche_ekran_sovgade(int *type, int nonb, TypePage paj_retou);
+int afiche_ekran_sovgade(int *type, int nonb, TipPaj paj_retou);
 
 #endif //MEN_MAKET_FICHYE_H
