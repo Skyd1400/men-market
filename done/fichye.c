@@ -10,7 +10,7 @@
 #include "strikti.h"
 #include "../lib/csv.h"
 #include "../util.h"
-#include "../page.h"
+#include "../paj.h"
 #include "../Maket.h"
 
 typedef struct {
@@ -498,7 +498,7 @@ void chaje_done() {
 
 int afiche_ekran_sovgade(int *type, int nonb, TipPaj paj_retou) {
     ScreenClear();
-    afficher_en_tete("Sauvegarde");
+    afiche_antet("Sauvegarde");
     textcolor(WHITE);
     afiche_alet("\n\tSauvegarde du(es) fichier(s)...", AVETISMAN);
     for (int i = 0; i < nonb; i++) {

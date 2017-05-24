@@ -9,7 +9,7 @@
 #include "../Maket.h"
 #include "strikti.h"
 #include "../lib/csv.h"
-#include "../page.h"
+#include "../paj.h"
 #include "../util.h"
 
 
@@ -19,9 +19,6 @@ Lis liste_produits_succursales;
 Lis liste_clients;
 Lis liste_ventes;
 Lis liste_details_ventes;
-
-
-#define T_TAMPON 1024
 
 Lis *jwenn_lis(int type) {
     switch (type) {

@@ -5,7 +5,7 @@
 #ifndef CCINTERFACE_MENU_H
 #define CCINTERFACE_MENU_H
 
-#include "page.h"
+#include "paj.h"
 
 typedef struct {
     char *non;

@@ -7,7 +7,7 @@
 
 #include "Maket.h"
 
-void afficher_en_tete(char *titre);
+void afiche_antet(char *titre);
 void kreye_paj_sikisal(Paj * paj);
 void kreye_paj_pwodwi(Paj * paj);
 void kreye_paj_vant(Paj *page);

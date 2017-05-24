@@ -15,7 +15,7 @@
 
 int ajoute_vant() {
     ScreenClear();
-    afficher_en_tete("Ajouter une vente");
+    afiche_antet("Ajouter une vente");
     textcolor(WHITE);
 
     char buffer[1024];
@@ -31,7 +31,7 @@ int ajoute_vant() {
         getch();
         return MM_MENI_KLIYAN;
     }
-    int id_kliyan = antre_chif("n\tEntrez l'identifiant du client : ");
+    int id_kliyan = antre_chif("\n\tEntrez l'identifiant du client : ");
     if (id_kliyan < 1) {
         afiche_alet("\tL'identifiant est incorrect\n", DANJE);
         textcolor(WHITE);
@@ -193,7 +193,7 @@ int ajoute_vant() {
 
 int retou_atik() {
     ScreenClear();
-    afficher_en_tete("Retourner un article");
+    afiche_antet("Retourner un article");
     textcolor(WHITE);
 
     int id = antre_chif("\n\tEntrer l'identifiant de la vente : ");
@@ -252,7 +252,7 @@ int retou_atik() {
 
 int afiche_meni_vant() {
     ScreenClear();
-    afficher_en_tete("Module Ventes");
+    afiche_antet("Module Ventes");
     Meni meni_vant[4] = {
             {"Ajouter une vente.",          MM_AJOU_VANT},
             {"Retourner un article vendu.", MM_RETOU_ATIK},

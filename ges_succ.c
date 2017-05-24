@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <mem.h>
 #include "Maket.h"
-#include "page.h"
+#include "paj.h"
 #include "meni.h"
 #include "done/strikti.h"
 #include "util.h"
@@ -16,7 +16,7 @@
 
 int ajoute_sikisal() {
     ScreenClear();
-    afficher_en_tete("Ajouter une succursale");
+    afiche_antet("Ajouter une succursale");
     // Kreye varyab kap kenbe kliyan nou an
     Sikisal *sikisal = malloc(sizeof(Sikisal));
     sikisal->adres = malloc(sizeof(Adres));
@@ -57,7 +57,7 @@ int ajoute_sikisal() {
 
 int modifye_sikisal() {
     ScreenClear();
-    afficher_en_tete("Modifier une  Succursale");
+    afiche_antet("Modifier une  Succursale");
     textcolor(WHITE);
 
     int id_sikisal = antre_chif("\n\tEntrer l'Id de la succursale : ");
@@ -160,7 +160,7 @@ int modifye_sikisal() {
 
 int afiche_meni_sikisal() {
     ScreenClear();
-    afficher_en_tete("Module Succursale");
+    afiche_antet("Module Succursale");
 
     Meni meni_sikisal[4] = {
             {"Ajouter une succursale",               MM_AJOU_SIKISAL},

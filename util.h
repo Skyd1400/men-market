@@ -22,6 +22,7 @@ void afiche_alet(const char *, TipAlet);
 char * jwenn_non_depatman(Depatman depatman);
 void afiche_kliyan(Kliyan kliyan);
 void afiche_sikisal(Sikisal sikisal);
+void afiche_pwodwi(Pwodwi pwodwi);
 
 void konveti_dat(const struct tm *dat_c, Dat *dat_nou);
 

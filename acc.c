@@ -6,13 +6,13 @@
 #include <stdio.h>
 #include "lib/conio2.h"
 #include "Maket.h"
-#include "page.h"
+#include "paj.h"
 #include "meni.h"
 
 
 int afficher_accueil() {
     ScreenClear();
-    afficher_en_tete("BIENVENUE");
+    afiche_antet("BIENVENUE");
 
     Meni meni_akey[6] = {
             {"SUCCURSALES", MM_MENI_SIKISAL},

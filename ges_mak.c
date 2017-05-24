@@ -4,8 +4,7 @@
 
 #include "lib/conio2.h"
 #include "Maket.h"
-#include "done/strikti.h"
-#include "page.h"
+#include "paj.h"
 #include "done/fichye.h"
 
 

@@ -8,39 +8,22 @@
 #include <ctype.h>
 #include "antre.h"
 #include "util.h"
+#include "Maket.h"
 
 
 char buffer[1024];
 
 int antre_adres(Adres *adres) {
-    printf("\tEntrez l'adresse : \n");
-    do {
-        printf("\t\tEntrez le numero : ");
-        gets(buffer);
-        adres->no = atoi(buffer);
-    } while (adres->no <= 0); //fok li se yon chif antye pozitif
+    adres->no = antre_chif("\tEntrez l'adresse : \n");
 
-    printf("\t\tEntrez le nom de la rue : ");
-    gets(buffer);
-    strncpy(adres->ri, buffer, 49);
-    adres->ri[49] = 0;
+    antre_teks("\t\tEntrez le nom de la rue : ", adres->ri, 49);
+    antre_teks("\t\tEntrez le nom de la ville : ", adres->vil, 24);
 
-    printf("\t\tEntrez le nom de la ville : ");
-    gets(buffer);
-    strncpy(adres->vil, buffer, 24);
-    adres->vil[24] = 0;
-
-    int depatman = 0;
-    printf("\t\tEntrez le departement\n");
+    char * depatman[10];
     for (int i = 0; i < 10; i++) {
-        printf("\t\t%d) %s\n", i + 1, jwenn_non_depatman(i));
+        depatman[i] =  jwenn_non_depatman((Depatman)i);
     }
-    do {
-        printf("\t\tChoisissez un numero : ");
-        gets(buffer);
-        depatman = atoi(buffer);
-    } while (depatman <= 0 || depatman > 10);
-    adres->depatman = depatman - 1; //
+    adres->depatman = (Depatman)antre_chwa("\t\tEntrez le departement\n", depatman, 10);
 }
 
 int antre_teks(const char *mesaj, char *chen, size_t limit) {
@@ -88,4 +71,12 @@ int antre_chif(const char *mesaj) {
         valid = sscanf(buffer, "%d", &ret);
     } while (valid != 1);
     return ret;
+}
+
+
+int poz_pou_retounen(int vale) {
+    textcolor(WHITE);
+    printf("\n\tAppuyer sur une touche  pour retourner au menu...");
+    getch();
+    return vale;
 }

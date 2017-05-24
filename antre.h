@@ -16,4 +16,7 @@ int antre_nimewo_telefon(char * chen);
 int antre_chwa(const char *mesaj, char **opsyon, int limit);
 int antre_chif(const char * mesaj);
 
+
+int poz_pou_retounen(int vale);
+
 #endif //MEN_MAKET_ANTRE_H

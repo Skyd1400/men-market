@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include "Maket.h"
-#include "page.h"
+#include "paj.h"
 #include "meni.h"
 #include "done/strikti.h"
 #include "util.h"
@@ -25,7 +25,7 @@ Meni meni_rapo[5] = {
  */
 int liste_kliyan() {
     ScreenClear();
-    afficher_en_tete("Liste des clients");
+    afiche_antet("Liste des clients");
     textcolor(WHITE);
 
     Lis lis[10]; //varyab sa ap kenbe lis pou chak depatman yo
@@ -62,7 +62,7 @@ int liste_kliyan() {
 
 int liste_vant() {
     ScreenClear();
-    afficher_en_tete("Liste des ventes");
+    afiche_antet("Liste des ventes");
     textcolor(WHITE);
 
     Lis * lis_pwodwi = jwenn_lis(MM_LIS_PWODWI);
@@ -127,7 +127,7 @@ int liste_vant() {
 
 int liste_komand() {
     ScreenClear();
-    afficher_en_tete("Liste des commandes");
+    afiche_antet("Liste des commandes");
     textcolor(WHITE);
 
     Lis * lis_pwodwi = jwenn_lis(MM_LIS_PWODWI);
@@ -156,7 +156,7 @@ int liste_komand() {
 
 int liste_sikisal() {
     ScreenClear();
-    afficher_en_tete("Succursales a approvisionner");
+    afiche_antet("Succursales a approvisionner");
     textcolor(WHITE);
 
     Lis * lis_sikisal = jwenn_lis(MM_LIS_SIKISAL);
@@ -207,7 +207,7 @@ int liste_sikisal() {
  */
 int afiche_meni_rapo() {
     ScreenClear();
-    afficher_en_tete("Rapports");
+    afiche_antet("Rapports");
     int ret = afiche_meni(meni_rapo, 5);
     switch (ret){
         case MM_LIS_KLIYAN_PA_DEPATMAN:

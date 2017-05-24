@@ -32,7 +32,7 @@ void fomile_kliyan(Kliyan *kliyan);
 
 int afiche_meni_kliyan() {
     ScreenClear();
-    afficher_en_tete("Module Clients");
+    afiche_antet("Module Clients");
 
     Meni meni_kliyan[4] = {
             {"Ajouter un client",                    MM_AJOU_KLIYAN},
@@ -58,7 +58,7 @@ int afiche_meni_kliyan() {
 
 int ajoute_kliyan() {
     ScreenClear();
-    afficher_en_tete("Ajouter un client");
+    afiche_antet("Ajouter un client");
     // Kreye varyab kap kenbe kliyan nou an
     Kliyan *kliyan = malloc(sizeof(Kliyan));
     kliyan->adres = malloc(sizeof(Adres));
@@ -101,7 +101,7 @@ int ajoute_kliyan() {
 
 int modifye_kliyan() {
     ScreenClear();
-    afficher_en_tete("Modifier un client");
+    afiche_antet("Modifier un client");
     char buffer[1024];
     textcolor(WHITE);
 

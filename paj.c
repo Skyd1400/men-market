@@ -2,7 +2,7 @@
 // Created by Hash Skyd on 4/11/2017.
 //
 #include <stdio.h>
-#include "page.h"
+#include "paj.h"
 #include "lib/conio2.h"
 
 char *bordure = "=====================================================================\n";
@@ -10,7 +10,7 @@ char *bordure_fine = "----------------------------------------------------------
 
 char *app_name = "       __   __ _____ _   _      __   __  ___  _   _______ _____\n      |  \\ /  |  ___) \\ | |    |  \\ /  |/ _ \\| | / /  ___|_   _)\n      |   v   | |_  |  \\| |    |   v   | |_| | |/ /| |_    | |\n      | |\\_/| |  _) |     | == | |\\_/| |  _  |   < |  _)   | |\n      | |   | | |___| |\\  |    | |   | | | | | |\\ \\| |___  | |\n      |_|   |_|_____)_| \\_|    |_|   |_|_| |_|_| \\_\\_____) |_|\n";
 
-void afficher_en_tete(char *titre)
+void afiche_antet(char *titre)
 {
     ScreenClear();
     char text[100];

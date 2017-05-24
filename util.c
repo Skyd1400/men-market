@@ -88,3 +88,25 @@ void afiche_sikisal(Sikisal sikisal) {
     printf("\t\t\tDepartement -> %s\n", jwenn_non_depatman(sikisal.adres->depatman)); // TODO depatman nimewo
     printf("\t\tTelephone -> %s\n", sikisal.telefon);
 }
+
+void afiche_pwodwi(Pwodwi pwodwi) {
+    printf("\tProduit : \n");
+    printf("\t\tDescription -> %s\n", pwodwi.deskripsyon);
+    printf("\t\tQuantite -> %d\n", pwodwi.kantite);
+    printf("\t\tStock de securite -> %d\n", pwodwi.stok_sekirite);
+    printf("\t\tPrix de revient -> %d\n", pwodwi.pri_revyen_init);
+    printf("\t\tPrix de vente -> %d\n", pwodwi.pri_vant_inite);
+    char * stati;
+    switch (pwodwi.stati) {
+        case EN_VENTE:
+            stati = "En vente";
+            break;
+        case EXCLUS:
+            stati = "Exclus";
+            break;
+        case NON_DISPO:
+            stati = "Non disponible";
+            break;
+    }
+    printf("\t\tStatut -> %s\n", stati);
+}
