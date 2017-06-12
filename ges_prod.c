@@ -1,6 +1,10 @@
-//
-// Created by Hash Skyd on 5/21/2017.
-//
+/*
+ * FICHIER : ges_prod.c
+ * DATE CREATION : 21/5/2017
+ * DESCRIPTION : Pati sa se li ki gen fonksyonalite an rapo ak modil pwodwi.
+ * Fonksyon ladanl yo afiche meni pwddwi a e enplemante fonksyonalite ki nan kaye chaj la
+ *
+ */
 
 #include <malloc.h>
 #include <stdio.h>
@@ -13,6 +17,9 @@
 #include "util.h"
 #include "done/strikti.h"
 
+/*
+ * Fonksyon sa pemet ou ajoute yon pwodwi nan lis pwodwi magazen an
+ */
 int ajoute_pwodwi() {
     ScreenClear();
     afiche_antet("Ajouter un produit");
@@ -66,6 +73,9 @@ int ajoute_pwodwi() {
     return  poz_pou_retounen(MM_MENI_PWODWI);
 }
 
+/*
+ * Sa pemet ou modifye enfomasyon sou pwodwi a
+ */
 int modifye_pwodwi() {
     ScreenClear();
     afiche_antet("Modifier un produit");
@@ -188,6 +198,9 @@ int modifye_pwodwi() {
     return MM_MENI_PWODWI;
 }
 
+/*
+ * Fonksyon sa pemet ou ajoute yon pwodwi nan yon sikisal
+ */
 int ajoute_pwodwi_sikisal() {
     ScreenClear();
     afiche_antet("Ajouter un produit dans une succursale");
@@ -230,10 +243,11 @@ int ajoute_pwodwi_sikisal() {
         pwodwi_sikisal->kantite_max = antre_chif("\tEntrez la qte max que peut contenir la succursale : ");
     } while (pwodwi_sikisal->kantite_max < pwodwi_sikisal->kantite_min);
 
-    do {
-        pwodwi_sikisal->kantite_dispo = antre_chif("\tEntrez la qte contenue dans la succursale : ");
-    } while (pwodwi_sikisal->kantite_dispo > pwodwi_sikisal->kantite_max && pwodwi_sikisal->kantite_dispo < 0);
+//    do {
+//        pwodwi_sikisal->kantite_dispo = antre_chif("\tEntrez la qte contenue dans la succursale : ");
+//    } while (pwodwi_sikisal->kantite_dispo > pwodwi_sikisal->kantite_max && pwodwi_sikisal->kantite_dispo < 0);
 
+    pwodwi_sikisal->kantite_dispo = 0;
 
     printf("\n\tEnregistrer les changements [(O)ui|(N)on]: ");
     char chwa = (char) getch();
@@ -251,6 +265,9 @@ int ajoute_pwodwi_sikisal() {
     return poz_pou_retounen(MM_MENI_PWODWI);
 }
 
+/*
+ * Sa pemet ou modifye enfomasyon sou kijan sikisal la ka pran pwodwi sa
+ */
 int modifye_pwodwi_sikisal() {
     ScreenClear();
     afiche_antet("Modifier les informations du produit dans la succursale");
@@ -345,6 +362,9 @@ int modifye_pwodwi_sikisal() {
     return poz_pou_retounen(MM_MENI_PWODWI);
 }
 
+/*
+ * Fonksyon sa apwovizyone yon sikisal ak yon pwodwi
+ */
 int apwovizyone_sikisal() {
     ScreenClear();
     afiche_antet("Approvisionner une succursale");
@@ -401,6 +421,9 @@ int apwovizyone_sikisal() {
     return MM_MENI_PWODWI;
 }
 
+/*
+ * Fonksyon sa afiche meni pwodwi a
+ */
 int afiche_meni_pwodwi() {
     ScreenClear();
     afiche_antet("Module Produits");
@@ -440,6 +463,9 @@ int afiche_meni_pwodwi() {
     return ret;
 }
 
+/*
+ * Fonksyon sa kreye paj modil pwodwi a
+ */
 void kreye_paj_pwodwi(Paj * paj)  {
     paj->id = MM_MENI_PWODWI;
     paj->afiche = afiche_meni_pwodwi;

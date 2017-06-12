@@ -1,11 +1,13 @@
-//
-// Created by Hash Skyd on 4/5/2017.
-//
+/*
+ * FICHIER : ges_mak.c
+ * DATE CREATION : 4/5/2017
+ * DESCRIPTION : Fichye sa inisyalize aplikasyon an
+ *
+ */
 
-#include "lib/conio2.h"
 #include "Maket.h"
-#include "paj.h"
 #include "done/fichye.h"
+#include "paj.h"
 
 
 #define MAX_PAJ 6

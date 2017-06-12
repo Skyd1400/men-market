@@ -1,7 +1,9 @@
-//
-// Created by Hash Skyd on 4/5/2017.
-//
-
+/*
+ * FICHIER : acc.c
+ * DATE CREATION : 4/5/2017
+ * DESCRIPTION : Fichye sa responsab premye paj la (paj akey la)
+ *
+ */
 
 #include <stdio.h>
 #include "lib/conio2.h"
@@ -9,7 +11,9 @@
 #include "paj.h"
 #include "meni.h"
 
-
+/*
+ * Fonksyon sa afiche premye paj la
+ */
 int afficher_accueil() {
     ScreenClear();
     afiche_antet("BIENVENUE");
@@ -25,6 +29,9 @@ int afficher_accueil() {
     return afiche_meni(meni_akey, 6);
 }
 
+/*
+ * Fonksyon sa kreye paj byenvini an
+ */
 void kreye_paj_akey(Paj *page){
     page->id = MM_AKEY;
     page->afiche = afficher_accueil;

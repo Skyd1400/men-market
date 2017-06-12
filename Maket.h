@@ -14,8 +14,12 @@ typedef enum {
     EXCLUS,
     NON_DISPO
 } StatiPwodwi;
-
-
+/*
+ * FICHIER : Maket.h
+ * DATE CREATION : 4/5/2017
+ * DESCRIPTION : Se la tout strikti ki an rapo ak kaye chaj la deklare
+ *
+ */
 typedef enum {
     Atibonit,
     Grandans,

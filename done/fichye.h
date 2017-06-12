@@ -1,7 +1,3 @@
-//
-// Created by Hash Skyd on 5/18/2017.
-//
-
 #ifndef MEN_MAKET_FICHYE_H
 #define MEN_MAKET_FICHYE_H
 
@@ -12,7 +8,6 @@
  * a pati de fichye sa
  */
 void chaje_done();
-
 int ekri_fichye(int type);
 int afiche_ekran_sovgade(int *type, int nonb, TipPaj paj_retou);
 

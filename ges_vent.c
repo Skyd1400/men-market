@@ -1,6 +1,9 @@
-//
-// Created by Hash Skyd on 4/5/2017.
-//
+/*
+ * FICHIER : ges_vent.c
+ * DATE CREATION : 4/5/2017
+ * DESCRIPTION : Fichye sa regwoupe fonksyon ki rapo ak modil vant
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +15,9 @@
 #include "antre.h"
 #include "done/fichye.h"
 
-
+/*
+ * Fonksyon sa responsab ajoute enfomasyon sou yon vant ki fet
+ */
 int ajoute_vant() {
     ScreenClear();
     afiche_antet("Ajouter une vente");
@@ -97,27 +102,27 @@ int ajoute_vant() {
            vant->dat->minit, vant->dat->segond);
 
     char continuer;
-    Lis * lis_detay = jwenn_lis(MM_LIS_DETAY_VANT); // pou nou ka pran pwochen id a ladan li
+    Lis *lis_detay = jwenn_lis(MM_LIS_DETAY_VANT); // pou nou ka pran pwochen id a ladan li
     Lis lis = {0, 0, lis_detay->id_swivan, NULL, NULL, MM_LIS_DETAY_VANT}; // sa se yon lis tampore
     do { // Fo li achte kan menm
-        Pwodwi * pwodwi = NULL;
+        Pwodwi *pwodwi = NULL;
         int kod_pwodwi = antre_chif("\n\tEntrer le code du produit : ");
         if (kod_pwodwi < 1) {
             afiche_alet("\tL'identifiant est incorrect\n", DANJE);
             textcolor(WHITE);
         }
         pwodwi = jwenn_nan_lis(jwenn_lis(MM_LIS_PWODWI), kod_pwodwi, 1); // Pou nou ka pran pri vant
-        PwodwiSikisal * pwodwi_sikisal = NULL;
-        Mayon * mayon_pwodwi_sikisal = jwenn_lis(MM_LIS_PWODWI_SIKISAL)->premye;
+        PwodwiSikisal *pwodwi_sikisal = NULL;
+        Mayon *mayon_pwodwi_sikisal = jwenn_lis(MM_LIS_PWODWI_SIKISAL)->premye;
         while (mayon_pwodwi_sikisal != NULL) {
-            PwodwiSikisal * ps = (PwodwiSikisal *) mayon_pwodwi_sikisal->done;
+            PwodwiSikisal *ps = (PwodwiSikisal *) mayon_pwodwi_sikisal->done;
             if (ps->pwodwi == kod_pwodwi && ps->sikisal == id_sikisal) {
                 pwodwi_sikisal = ps;
                 break;
             }
             mayon_pwodwi_sikisal = mayon_pwodwi_sikisal->apre;
         }
-        if (pwodwi == NULL && pwodwi_sikisal == NULL) {
+        if (pwodwi == NULL || pwodwi_sikisal == NULL) {
             // Verifye ke se pa yon lot kote li soti ak li
             afiche_alet("\tCe produit n'existe pas dans le magasin\n", DANJE);
             textcolor(WHITE);
@@ -125,9 +130,18 @@ int ajoute_vant() {
             int kantite = 0;
             do {
                 kantite = antre_chif("\tEntrez la quantite achetee : ");
-            } while (kantite < 1 && kantite > pwodwi_sikisal->kantite_dispo); // Yon moun pa ka achte -1 pwodwi oswa anyen
-
-            DetayVant * detay_vant = malloc(sizeof(DetayVant));
+                if (kantite > pwodwi_sikisal->kantite_dispo) {
+                    textcolor(LIGHTRED);
+                    printf("\tLa quantite disponible est %d\n", pwodwi_sikisal->kantite_dispo);
+                    textcolor(WHITE);
+                }
+            } while (kantite < 1 &&
+                     kantite > pwodwi_sikisal->kantite_dispo); // Yon moun pa ka achte -1 pwodwi oswa anyen
+            if (pwodwi_sikisal->kantite_dispo < pwodwi_sikisal->kantite_min) {
+                afiche_alet("\tLa succursale a besoin d'etre approvisionne", AVETISMAN);
+                textcolor(WHITE);
+            }
+            DetayVant *detay_vant = malloc(sizeof(DetayVant));
             detay_vant->pwodwi = kod_pwodwi;
             detay_vant->kantite_atik = kantite;
             detay_vant->pri_inite = pwodwi->pri_vant_inite;
@@ -137,8 +151,8 @@ int ajoute_vant() {
             mete_nan_lis(&lis, detay_vant);
         }
         printf("\n\tContinuer l'ajout [(O)ui|(N)on] : ");
-        continuer = getch();
-    }while (continuer == 'O' || continuer == 'o');
+        continuer = (char) getch();
+    } while (continuer == 'O' || continuer == 'o');
 
     printf("\n\tEnregistrer les changements [(O)ui\\(N)on]: ");
     char chwa = getch();
@@ -146,7 +160,8 @@ int ajoute_vant() {
         if (lis.nonb > 0) { // Fok gen yon atiki ki van
             mete_nan_lis(lis_vant, vant);// anrejistre vant la nan lis la
             // Yon ti maji nwa
-            if (lis_detay->denye != NULL) lis_detay->denye->apre = lis.premye; // Nou ajoute fen lis la nan lis prensipal la
+            if (lis_detay->denye != NULL)
+                lis_detay->denye->apre = lis.premye; // Nou ajoute fen lis la nan lis prensipal la
             lis.premye->anvan = lis_detay->denye; // nou ajoute lis prensipal la anvan lis nou an
             lis_detay->denye = lis.denye;
             if (lis_detay->premye == NULL) lis_detay->premye = lis.premye; // pat gen anyen nan lis la;
@@ -154,14 +169,14 @@ int ajoute_vant() {
             lis_detay->nonb += lis.nonb;
             lis_detay->id_swivan = lis.id_swivan;
             // Retire pwodwi a nan magazen an
-            Mayon * mayon = lis.premye;
+            Mayon *mayon = lis.premye;
             while (mayon != NULL) {
-                DetayVant * dv = mayon->done;
+                DetayVant *dv = mayon->done;
 
-                PwodwiSikisal * pwodwi_sikisal = NULL;
-                Mayon * mayon_pwodwi_sikisal = jwenn_lis(MM_LIS_PWODWI_SIKISAL)->premye;
+                PwodwiSikisal *pwodwi_sikisal = NULL;
+                Mayon *mayon_pwodwi_sikisal = jwenn_lis(MM_LIS_PWODWI_SIKISAL)->premye;
                 while (mayon_pwodwi_sikisal != NULL) {
-                    PwodwiSikisal * ps = (PwodwiSikisal *) mayon_pwodwi_sikisal->done;
+                    PwodwiSikisal *ps = (PwodwiSikisal *) mayon_pwodwi_sikisal->done;
                     if (ps->pwodwi == dv->pwodwi && ps->sikisal == id_sikisal) {
                         ps->kantite_dispo -= dv->kantite_atik;
                     }
@@ -175,10 +190,10 @@ int ajoute_vant() {
             textcolor(WHITE);
         }
     } else {
-        Mayon * mayon = lis.premye;
+        Mayon *mayon = lis.premye;
         while (mayon != NULL) {
             free(mayon->done);
-            Mayon * m = mayon;
+            Mayon *m = mayon;
             mayon = mayon->apre;
             free(m);
         }
@@ -191,6 +206,9 @@ int ajoute_vant() {
     return MM_MENI_VANT;
 }
 
+/*
+ * Fonksyon sa pemet yon moun retounen yon atik
+ */
 int retou_atik() {
     ScreenClear();
     afiche_antet("Retourner un article");
@@ -250,14 +268,17 @@ int retou_atik() {
     return MM_MENI_VANT;
 }
 
+/*
+ * Fonksuon sa afiche meni vant lan
+ */
 int afiche_meni_vant() {
     ScreenClear();
     afiche_antet("Module Ventes");
     Meni meni_vant[4] = {
-            {"Ajouter une vente.",          MM_AJOU_VANT},
+            {"Ajouter une vente.", MM_AJOU_VANT},
             {"Retourner un article vendu.", MM_RETOU_ATIK},
-            {"Enregistrer les fichiers.",   MM_SOVGAD},
-            {"Retour",                      MM_AKEY}
+            {"Enregistrer les fichiers.", MM_SOVGAD},
+            {"Retour", MM_AKEY}
     };
     int ret = afiche_meni(meni_vant, 4);
     int fichye[2] = {MM_LIS_VANT, MM_LIS_DETAY_VANT};
@@ -275,7 +296,9 @@ int afiche_meni_vant() {
     return ret;
 }
 
-
+/*
+ * Fonksyon sa kreye paj modil vant lan
+ */
 void kreye_paj_vant(Paj *page) {
     page->id = MM_MENI_VANT;
     page->afiche = afiche_meni_vant;

@@ -1,8 +1,10 @@
-//
-// Created by Hash Skyd on 4/5/2017.
-//
-
-
+/*
+ * FICHIER : ges_cli.c
+ * DATE CREATION : 4/5/2017
+ * DESCRIPTION : Pati sa se li ki gen fonksyonalite an rapo ak modil kliyan.
+ * Fonksyon ladanl yo afiche meni kliyan a e enplemante fonksyonalite ki nan kaye chaj la
+ *
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <mem.h>
@@ -14,21 +16,11 @@
 #include "antre.h"
 #include "done/fichye.h"
 
-
-/*
- * Fonksyon sa responsab pou jere paj ajoute yon kliyan
- */
 int ajoute_kliyan();
 
-/*
- * Fonksyon sa reponsab pou jere paj modifye yon kliyan
- */
+
 int modifye_kliyan();
 
-/*
- * Sa responsab pou mande itilizate a enfomasyon sou yon kliyan
- */
-void fomile_kliyan(Kliyan *kliyan);
 
 int afiche_meni_kliyan() {
     ScreenClear();
@@ -56,6 +48,9 @@ int afiche_meni_kliyan() {
     return ret;
 }
 
+/*
+ * Sa responsab pou mande itilizate a enfomasyon sou yon kliyan
+ */
 int ajoute_kliyan() {
     ScreenClear();
     afiche_antet("Ajouter un client");
@@ -99,6 +94,9 @@ int ajoute_kliyan() {
     return MM_MENI_KLIYAN;
 }
 
+/*
+ * Fonksyon sa responsab modifye yon chan nan kliyan an swivan chwa itilizate
+ */
 int modifye_kliyan() {
     ScreenClear();
     afiche_antet("Modifier un client");
@@ -226,27 +224,9 @@ int modifye_kliyan() {
     }
     return MM_MENI_KLIYAN;
 }
-
-void antre_tip(Kliyan *kliyan, char *buffer) {
-    int tip_kliyan = 0;
-    printf("\tEntrez le type de client\n");
-    printf("\t1) Particulier\n");
-    printf("\t2) Entreprise\n");
-    do {
-        printf("\tChoisissez un numero : ");
-        gets(buffer);
-        tip_kliyan = atoi(buffer);
-    } while (tip_kliyan <= 0 || tip_kliyan > 2);
-    kliyan->tip = tip_kliyan - 1; //
-
-}
-
-void fomile_kliyan(Kliyan *kliyan) {
-}
-
-
-
-
+/*
+ * Fonksyon sa responsab kreyasyon paj modil kliyan an
+ */
 void kreye_paj_kliyan(Paj *page) {
     page->id = MM_MENI_KLIYAN;
     page->afiche = afiche_meni_kliyan;

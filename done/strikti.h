@@ -1,7 +1,3 @@
-//
-// Created by Hash Skyd on 4/10/2017.
-//
-
 #ifndef MEN_MAKET_DATA_H
 #define MEN_MAKET_DATA_H
 

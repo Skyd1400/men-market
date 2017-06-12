@@ -1,16 +1,13 @@
-//
-// Created by Hash Skyd on 4/10/2017.
-//
+/*
+ * FICHIER : strikti.c
+ * DATE CREATION : 4/10/2017
+ * DESCRIPTION : Sa regroupe fonksyonalite kap jere lis chene ki gen reprezantasyon done yon nan memwa a
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <malloc.h>
-#include <mem.h>
 #include "../Maket.h"
 #include "strikti.h"
-#include "../lib/csv.h"
-#include "../paj.h"
-#include "../util.h"
 
 
 Lis liste_succursales;

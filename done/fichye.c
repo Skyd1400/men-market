@@ -1,6 +1,9 @@
-//
-// Created by Hash Skyd on 5/18/2017.
-//
+/*
+ * FICHIER : rapp.c
+ * DATE CREATION : 5/18/2017
+ * DESCRIPTION : Sa regroupe tout fonksyonalite ki an rapo ak fiche a
+ *
+ */
 
 #include <stddef.h>
 #include <stdlib.h>

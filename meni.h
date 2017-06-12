@@ -1,7 +1,3 @@
-//
-//
-//
-
 #ifndef CCINTERFACE_MENU_H
 #define CCINTERFACE_MENU_H
 

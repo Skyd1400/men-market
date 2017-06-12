@@ -1,6 +1,9 @@
-//
-// Created by Hash Skyd on 4/5/2017.
-//
+/*
+ * FICHIER : ges_succ.c
+ * DATE CREATION : 4/5/2017
+ * DESCRIPTION : Fichye sa gen fonksyonalite ki an rapo ak modil sikisal
+ *
+ */
 
 #include <malloc.h>
 #include <stdio.h>
@@ -13,17 +16,17 @@
 #include "antre.h"
 #include "done/fichye.h"
 
-
+/*
+ * Fonksyon sa pemet yo ajoute yon sikisal
+ */
 int ajoute_sikisal() {
     ScreenClear();
     afiche_antet("Ajouter une succursale");
-    // Kreye varyab kap kenbe kliyan nou an
     Sikisal *sikisal = malloc(sizeof(Sikisal));
     sikisal->adres = malloc(sizeof(Adres));
     textcolor(WHITE);
 
-    // Mande itilizate a enfomasyon sou kliyan nap ajoute a
-    antre_teks("\n\tEntrez la description de la succursale : ", sikisal->deskripsyon, 50);
+    antre_teks("\n\tEntrez la description de la succursale:  ", sikisal->deskripsyon, 50);
 
     antre_teks("\tEntrez le nom du responsable : ", sikisal->responsab, 50);
 
@@ -36,8 +39,6 @@ int ajoute_sikisal() {
     printf("\n\tEnregistrer les changements [(O)ui|(N)on]: ");
     char chwa = getch();
     if (chwa == 'O' || chwa == 'o') {
-        //Kliyan an deside sovgade done li
-        //Pran lis sikisal la
         Lis *lis_sikisal = jwenn_lis(MM_LIS_SIKISAL);
         // mete id ke sikisal sa ka genyen
         sikisal->id = lis_sikisal->id_swivan;
@@ -55,6 +56,9 @@ int ajoute_sikisal() {
     return MM_MENI_SIKISAL;
 }
 
+/*
+ * Fonksyon sa pemet yo modifye yon chan nan sikisal la dapre sa itlizate a seleksyone
+ */
 int modifye_sikisal() {
     ScreenClear();
     afiche_antet("Modifier une  Succursale");
@@ -64,100 +68,99 @@ int modifye_sikisal() {
     if (id_sikisal < 1) {
         // id a pa bon
         afiche_alet("\tL'identifiant est incorrect", DANJE);
-        textcolor(WHITE);
-    } else {
-        // id a valid, ann chache sikisal ki gen done sa
-        Sikisal *sikisal = jwenn_nan_lis(jwenn_lis(MM_LIS_SIKISAL), id_sikisal, 1);
-        if (sikisal == NULL) {
-            afiche_alet("\tCette succursale n'existe pas", DANJE);
-            textcolor(WHITE);
-        } else{
-            char * opsyon[4] = {"Description", "Adresse", "Responsable", "Telephone"};
-            int chwa_modifikasyon = antre_chwa("\tQuel champ voulez-vous modifier?\n", opsyon, 4);
-
-            Sikisal nouvo_sikisal;
-            nouvo_sikisal.adres = malloc(sizeof(Adres));
-
-            char buffer[1024];
-            switch (chwa_modifikasyon) {
-                case 0:
-                    antre_teks("\tEntrez la nouvelle description : ", nouvo_sikisal.deskripsyon, 100);
-                    snprintf(buffer, 1024, "\tANCIENNE DESC. : %s", sikisal->deskripsyon);
-                    afiche_alet(buffer, DANJE);
-                    snprintf(buffer, 1024, "\tNOUVELLE DESC. : %s", nouvo_sikisal.deskripsyon);
-                    afiche_alet(buffer, SIKSE);
-                    break;
-                case 1:
-                    antre_adres(nouvo_sikisal.adres);
-                    snprintf(buffer, 1024,
-                             "\tAncien Adresse : \n\t\tNumero : %d\n\t\tRue : %s\n\t\tVille : %s\n\t\tDepartement : %s",
-                             sikisal->adres->no,
-                             sikisal->adres->ri,
-                             sikisal->adres->vil,
-                             jwenn_non_depatman(sikisal->adres->depatman));
-                    afiche_alet(buffer, DANJE);
-                    snprintf(buffer, 1024,
-                             "\n\tNouvelle Adresse : \n\t\tNumero : %d\n\t\tRue : %s\n\t\tVille : %s\n\t\tDepartement : %s",
-                             nouvo_sikisal.adres->no,
-                             nouvo_sikisal.adres->ri,
-                             nouvo_sikisal.adres->vil,
-                             jwenn_non_depatman(nouvo_sikisal.adres->depatman));
-                    afiche_alet(buffer, SIKSE);
-                    break;
-                case 2:
-                    antre_teks("\tEntrez le nom du reponsable : ", nouvo_sikisal.responsab, 50);
-                    snprintf(buffer, 1024, "\tANCIEN RESP. : %s", sikisal->responsab);
-                    afiche_alet(buffer, DANJE);
-                    snprintf(buffer, 1024, "\tNOUVEAU RESP. : %s", nouvo_sikisal.responsab);
-                    afiche_alet(buffer, SIKSE);
-                    break;
-                case 3:
-                    antre_nimewo_telefon(nouvo_sikisal.telefon);
-                    snprintf(buffer, 1024, "\tAncien Telephone : %s", sikisal->telefon);
-                    afiche_alet(buffer, DANJE);
-                    snprintf(buffer, 1024, "\tNouveau Telephone : %s", nouvo_sikisal.telefon);
-                    afiche_alet(buffer, SIKSE);
-                    break;
-            }
-            textcolor(WHITE);
-
-            printf("\n\tEnregistrer les changements [(O)ui\\(N)on]: ");
-            char chwa = getch();
-            if (chwa == 'O' || chwa == 'o') {
-                Adres * temp = sikisal->adres; // Si moun nan te modifye chan adres la, pou nou ka efase ansyen nou
-                switch (chwa_modifikasyon) {
-                    case 0: // anrejistre chan non
-                        strncpy(sikisal->deskripsyon, nouvo_sikisal.deskripsyon, 100);
-                        break;
-                    case 1: // anrejistre chan tip
-                        sikisal->adres = nouvo_sikisal.adres;
-                        free(temp);
-                        break;
-                    case 2: // anrejistre chan adres
-                        strncpy(sikisal->responsab, nouvo_sikisal.responsab, 50);
-                        free(temp);
-                        break;
-                    case 3: // anrejistre chan adres
-                        strncpy(sikisal->telefon, nouvo_sikisal.telefon, 9);
-                        break;
-                }
-                afiche_alet("\n\tles informations ont ete enregistrees", SIKSE);
-                textcolor(WHITE);
-
-            }
-            if (chwa_modifikasyon != 1) {
-                // Apa adres la yo modifye
-                free(nouvo_sikisal.adres);
-            }
-
-            printf("\n\tAppuyer sur une touche  pour retourner au menu...");
-            getch();
-
-        }
-        return MM_MENI_SIKISAL;
+        return poz_pou_retounen(MM_MENI_SIKISAL);
     }
+
+    // id a valid, ann chache sikisal ki gen done sa
+    Sikisal *sikisal = jwenn_nan_lis(jwenn_lis(MM_LIS_SIKISAL), id_sikisal, 1);
+    if (sikisal == NULL) {
+        afiche_alet("\tCette succursale n'existe pas", DANJE);
+        return poz_pou_retounen(MM_MENI_SIKISAL);
+    }
+    char *opsyon[4] = {"Description", "Adresse", "Responsable", "Telephone"};
+    int chwa_modifikasyon = antre_chwa("\tQuel champ voulez-vous modifier?\n", opsyon, 4);
+
+    Sikisal nouvo_sikisal;
+    nouvo_sikisal.adres = malloc(sizeof(Adres));
+
+    char buffer[1024];
+    switch (chwa_modifikasyon) {
+        case 0:
+            antre_teks("\tEntrez la nouvelle description : ", nouvo_sikisal.deskripsyon, 99);
+            snprintf(buffer, 1024, "\tANCIENNE DESC. : %s", sikisal->deskripsyon);
+            afiche_alet(buffer, DANJE);
+            snprintf(buffer, 1024, "\tNOUVELLE DESC. : %s", nouvo_sikisal.deskripsyon);
+            afiche_alet(buffer, SIKSE);
+            break;
+        case 1:
+            antre_adres(nouvo_sikisal.adres);
+            snprintf(buffer, 1024,
+                     "\tAncien Adresse : \n\t\tNumero : %d\n\t\tRue : %s\n\t\tVille : %s\n\t\tDepartement : %s",
+                     sikisal->adres->no,
+                     sikisal->adres->ri,
+                     sikisal->adres->vil,
+                     jwenn_non_depatman(sikisal->adres->depatman));
+            afiche_alet(buffer, DANJE);
+            snprintf(buffer, 1024,
+                     "\n\tNouvelle Adresse : \n\t\tNumero : %d\n\t\tRue : %s\n\t\tVille : %s\n\t\tDepartement : %s",
+                     nouvo_sikisal.adres->no,
+                     nouvo_sikisal.adres->ri,
+                     nouvo_sikisal.adres->vil,
+                     jwenn_non_depatman(nouvo_sikisal.adres->depatman));
+            afiche_alet(buffer, SIKSE);
+            break;
+        case 2:
+            antre_teks("\tEntrez le nom du reponsable : ", nouvo_sikisal.responsab, 49);
+            snprintf(buffer, 1024, "\tANCIEN RESP. : %s", sikisal->responsab);
+            afiche_alet(buffer, DANJE);
+            snprintf(buffer, 1024, "\tNOUVEAU RESP. : %s", nouvo_sikisal.responsab);
+            afiche_alet(buffer, SIKSE);
+            break;
+        case 3:
+            antre_nimewo_telefon(nouvo_sikisal.telefon);
+            snprintf(buffer, 1024, "\tAncien Telephone : %s", sikisal->telefon);
+            afiche_alet(buffer, DANJE);
+            snprintf(buffer, 1024, "\tNouveau Telephone : %s", nouvo_sikisal.telefon);
+            afiche_alet(buffer, SIKSE);
+            break;
+    }
+    textcolor(WHITE);
+
+    printf("\n\tEnregistrer les changements [(O)ui\\(N)on]: ");
+    char chwa = getch();
+    if (chwa == 'O' || chwa == 'o') {
+        Adres *temp = sikisal->adres; // Si moun nan te modifye chan adres la, pou nou ka efase ansyen nou
+        switch (chwa_modifikasyon) {
+            case 0: // anrejistre chan non
+                strncpy(sikisal->deskripsyon, nouvo_sikisal.deskripsyon, 100);
+                break;
+            case 1: // anrejistre chan tip
+                sikisal->adres = nouvo_sikisal.adres;
+                free(temp);
+                break;
+            case 2: // anrejistre chan adres
+                strncpy(sikisal->responsab, nouvo_sikisal.responsab, 49);
+                break;
+            case 3: // anrejistre chan adres
+                strncpy(sikisal->telefon, nouvo_sikisal.telefon, 9);
+                break;
+        }
+        afiche_alet("\n\tles informations ont ete enregistrees", SIKSE);
+        textcolor(WHITE);
+
+    }
+    if (chwa_modifikasyon != 1) {
+        // Apa adres la yo modifye
+        free(nouvo_sikisal.adres);
+    }
+
+    return poz_pou_retounen(MM_MENI_SIKISAL);
+
 }
 
+/*
+ * Fonksyon sa afiche meni modil sikisal la
+ */
 int afiche_meni_sikisal() {
     ScreenClear();
     afiche_antet("Module Succursale");
@@ -184,6 +187,9 @@ int afiche_meni_sikisal() {
     return ret;
 }
 
+/*
+ * Fonksyon sa kreye paj pou afiche meni sikisal la
+ */
 void kreye_paj_sikisal(Paj *paj) {
     paj->id = MM_MENI_SIKISAL;
     paj->afiche = afiche_meni_sikisal;

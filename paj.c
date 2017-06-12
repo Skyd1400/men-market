@@ -1,9 +1,11 @@
-//
-// Created by Hash Skyd on 4/11/2017.
-//
+/*
+ * FICHIER : paj.c
+ * DATE CREATION : 10/5/2017
+ * DESCRIPTION : Se pati sa ki jere konsep paj yo
+ *
+ */
 #include <stdio.h>
 #include "paj.h"
-#include "lib/conio2.h"
 
 char *bordure = "=====================================================================\n";
 char *bordure_fine = "---------------------------------------------------------------------\n";
